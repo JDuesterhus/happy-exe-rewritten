@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+Release/
+HappyRewritten/Release/
+HappyRewritten/IniReader.cpp
+HappyRewritten/IniReader.h
+HappyRewritten/Memory.cpp
+HappyRewritten/Memory.h
+.vs/
+HappyRewritten/HappyRewritten.vcxproj
+HappyRewritten/HappyRewritten.vcxproj.filters
+HappyRewritten/HappyRewritten.vcxproj.user
+HappyRewritten.sdf
+HappyRewritten.sln
+HappyRewritten.v12.suo
