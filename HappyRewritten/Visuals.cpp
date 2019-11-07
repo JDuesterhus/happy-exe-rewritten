@@ -633,8 +633,12 @@ void CVisuals::Others() {
 		//NO FLASH
 		if (Settings.Misc.Reduce_Flash) {
 			if (classID == CCSPlayer) {
-				if (GetFlashAlpha(EntityList) != Settings.Misc.Reduce_Flash_Alpha) {
-					Memory::Write<float>(EntityList + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
+				int EntityTeam = Memory::Read<int>(EntityList + Offsets.m_iTeamNum);
+				int LocalTeam = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iTeamNum);
+				if (EntityTeam == LocalTeam) {
+					if (GetFlashAlpha(EntityList) != Settings.Misc.Reduce_Flash_Alpha) {
+						Memory::Write<float>(EntityList + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
+					}
 				}
 			}
 		}
