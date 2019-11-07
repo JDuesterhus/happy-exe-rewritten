@@ -430,9 +430,9 @@ void CVisuals::Chams() {
 					}
 				}
 				if (Settings.ESP.Chams_Highlight_Planter) {
-					DWORD weaponEntity = Misc.GetWeaponEntity(EntityList);
 					int weaponID = Misc.GetCurrentWeapon(EntityList);
 					if (weaponID == WEAPON_C4) {
+						DWORD weaponEntity = Misc.GetWeaponEntity(EntityList);
 						bool entityPlanting = Memory::Read<bool>(weaponEntity + 0x33D0); //m_bStartedArming
 						if (entityPlanting) {
 							R = Settings.Color.Chams_Highlight_Planter_R;
@@ -632,9 +632,9 @@ void CVisuals::Others() {
 		}
 		//NO FLASH
 		if (Settings.Misc.Reduce_Flash) {
-			if (EntityList == Offsets.LocalBase) {
-				if (GetFlashAlpha(Offsets.LocalBase) != Settings.Misc.Reduce_Flash_Alpha) {
-					Memory::Write<float>(Offsets.LocalBase + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
+			if (classID == CCSPlayer) {
+				if (GetFlashAlpha(EntityList) != Settings.Misc.Reduce_Flash_Alpha) {
+					Memory::Write<float>(EntityList + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
 				}
 			}
 		}
@@ -664,6 +664,20 @@ void CVisuals::Others() {
 				}
 			}
 		}
+		//FLIP KNIFE VMODEL
+		if (Settings.Misc.Swap_Knife_Hand) {
+			static bool flipped = false;
+			if (Misc.WeaponIsKnife(Misc.GetCurrentWeapon(Offsets.LocalBase)) && !flipped) {
+				Misc.Console("toggle cl_righthand");
+				flipped = true;
+			}
+			if (!Misc.WeaponIsKnife(Misc.GetCurrentWeapon(Offsets.LocalBase)) && flipped) {
+				Misc.Console("toggle cl_righthand");
+				flipped = false;
+			}
+		}
+
+
 		////THIRDPERSON
 		//if (thirdperson) {
 		//	static bool once = false;

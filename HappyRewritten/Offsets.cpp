@@ -26,7 +26,7 @@ void COffsets::DownloadOffsets() {
 	dwEntityList = iniReader.ReadInteger("signatures", "dwEntityList", 80622844);
 	dwForceAttack = iniReader.ReadInteger("signatures", "dwForceAttack", 51465156);
 	//dwForceAttack2 = iniReader.ReadInteger("signatures", "dwForceAttack2", 51465168);
-	dwForceAttack2 = dwForceAttack + 0x24; //temp fix because hazedumper gives wrong address || - 0xC
+	dwForceAttack2 = dwForceAttack - 0x54; //temp fix because hazedumper gives wrong address
 	dwForceBackward = iniReader.ReadInteger("signatures", "dwForceBackward", 51465240);
 	dwForceForward = iniReader.ReadInteger("signatures", "dwForceForward", 51465204);
 	dwForceJump = iniReader.ReadInteger("signatures", "dwForceJump", 85485976);

@@ -111,6 +111,7 @@ public:
 		bool Fakelag_Hotkey = false;
 		int Fakelag_Ticks = 14;
 		bool Bomb_Timer = false;
+		bool Swap_Knife_Hand = false;
 		int Weapon_Config = 0;
 	} Misc;
 

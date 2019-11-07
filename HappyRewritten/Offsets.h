@@ -181,6 +181,8 @@ public:
 
 	DWORD m_flModelScale = 0x2748; //m_flModelScale
 
+	DWORD ForceAttack2;
+	DWORD ForceAttack2Array;
 
 	DWORD ClientCMD;
 	DWORD ClientCMDArray;

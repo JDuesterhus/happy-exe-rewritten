@@ -72,6 +72,10 @@ void PatternScan() {
 	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, "xxxx?????xx????xxx????x????xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
+	//Offsets.ForceAttack2Array = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xxxx????", 8, 0x70, 0xC7, 0x7D, 0x31, 0x00, 0x00, 0x00, 0x00);
+	//Offsets.ForceAttack2 = Memory::Read<DWORD>(Offsets.ForceAttack2Array - Offsets.dwClient);
+
+
 	//Offsets.LobbyInfoArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xx?????xx????xxxx", 17, 0xC6, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x85, 0xC9, 0x74, 0x22);
 	//Offsets.LobbyInfo = Memory::Read<DWORD>(Offsets.LobbyInfoArray - Offsets.dwClient - 0x1000 + 0x50);
 	
@@ -423,8 +427,6 @@ void ActivationThread(){
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.force_update_spectator_glow, 0xEB);
 		}
 		OldTeam = CurrentTeam;
-
-		
 		
 		//cout << "Offsets.dwClient " << Offsets.dwClient << endl;
 		//cout << "Offsets.dwClientSize " << Offsets.dwClientSize << endl;
@@ -438,9 +440,18 @@ void ActivationThread(){
 		//Misc.Console(commandchar);
 		//count++;
 
+
+		//for (int a = 0; a <= 512; a++) {
+		//	int hex = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack - a);
+		//	cout << a << ": " << hex << endl;
+		//	Sleep(250);
+		//}
+
+
+
 		//int left = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceLeft);
-		//int right = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceRight);
 		//cout << "+moveleft: " << left << endl;
+		//int right = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceRight);
 		//cout << "+moveright: " << right << endl;
 
 		if (GetAsyncKeyState(Settings.Hotkey.Reload_Config) & Pressed) {
@@ -622,7 +633,9 @@ void ActivationThread(){
 void GlowThread() {
 	while (true) {
 		Sleep(64);
-		if (Settings.ESP.Glow && isConnected == SIGNONSTATE_FULL || Settings.Misc.Radar && isConnected == SIGNONSTATE_FULL) {
+		if (Settings.ESP.Glow || Settings.Misc.Radar) {
+			if (isConnected != SIGNONSTATE_FULL)
+				continue;
 			Visuals.Glow();
 		}
 		else {
@@ -646,7 +659,9 @@ void ChamsThread() {
 void OthersThread() {
 	while (true) {
 		Sleep(64);
-		if (Settings.Misc.Remove_Hands && isConnected == SIGNONSTATE_FULL || Settings.Misc.Remove_Ragdoll && isConnected == SIGNONSTATE_FULL || Settings.Misc.Remove_Smoke && isConnected == SIGNONSTATE_FULL || Settings.Misc.Remove_Fog && isConnected == SIGNONSTATE_FULL || Settings.Misc.Nightmode && isConnected == SIGNONSTATE_FULL || Settings.Misc.Reduce_Flash && isConnected == SIGNONSTATE_FULL) {
+		if (Settings.Misc.Remove_Hands || Settings.Misc.Remove_Ragdoll || Settings.Misc.Remove_Smoke || Settings.Misc.Remove_Fog || Settings.Misc.Nightmode || Settings.Misc.Reduce_Flash || Settings.Misc.Overwrite_FOV || Settings.Misc.Swap_Knife_Hand) {
+			if (isConnected != SIGNONSTATE_FULL)
+				continue;
 			Visuals.Others();
 		}
 		else {

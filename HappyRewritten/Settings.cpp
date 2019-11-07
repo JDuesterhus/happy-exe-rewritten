@@ -98,6 +98,7 @@ void CSettings::LoadConfig(char* path) {
 	Misc.Fakelag_Hotkey =						iniReader.ReadBoolean	("Misc",		"fakelag_hotkey",				Misc.Fakelag_Hotkey);
 	Misc.Fakelag_Ticks =						iniReader.ReadInteger	("Misc",		"fakelag_ticks",				Misc.Fakelag_Ticks);
 	Misc.Bomb_Timer =							iniReader.ReadBoolean	("Misc",		"bomb_timer",					Misc.Bomb_Timer);
+	Misc.Swap_Knife_Hand =						iniReader.ReadBoolean	("Misc",		"swap_knife_hand",				Misc.Swap_Knife_Hand);
 	Misc.Weapon_Config =						iniReader.ReadInteger	("Misc",		"weapon_config",				Misc.Weapon_Config);
 	//[Hotkey]
 	Hotkey.Toggle_Glow =						iniReader.ReadInteger	("Hotkey",		"toggle_glow",					Hotkey.Toggle_Glow);

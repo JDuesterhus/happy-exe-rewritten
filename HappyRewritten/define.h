@@ -112,6 +112,7 @@ enum ItemID {
 	WEAPON_SNOWBALL,			//"Snowball"
 	WEAPON_BUMPMINE,			//"Bump Mine"
 	WEAPON_KNIFE_BAYONET = 500,			//"Bayonet"
+	WEAPON_KNIFE_CLASSIC = 503,			//"Classic Knife"
 	WEAPON_KNIFE_FLIP = 505,			//"Flip Knife"
 	WEAPON_KNIFE_GUT,					//"Gut Knife"
 	WEAPON_KNIFE_KARAMBIT,				//"Karambit"

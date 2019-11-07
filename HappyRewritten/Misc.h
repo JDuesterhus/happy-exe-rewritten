@@ -37,6 +37,7 @@ public:
 	bool WeaponCanShoot(int id);
 	bool WeaponIsPistol(int id);
 	bool WeaponIsSniper(int id);
+	bool WeaponIsKnife(int id);
 	float GetSpeed1D();
 	float GetSpeed2D();
 	float GetSpeed3D(); 

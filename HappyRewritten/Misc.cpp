@@ -615,6 +615,38 @@ bool CMisc::WeaponIsSniper(int id) {
 	}
 }
 
+bool CMisc::WeaponIsKnife(int id) {
+	switch (id) {
+	case WEAPON_KNIFEGG:
+	case WEAPON_KNIFE:
+	case WEAPON_KNIFE_T:
+	case WEAPON_FISTS:
+	case WEAPON_MELEE:
+	case WEAPON_AXE:
+	case WEAPON_HAMMER:
+	case WEAPON_SPANNER:
+	case WEAPON_KNIFE_GHOST:
+	case WEAPON_KNIFE_BAYONET:
+	case WEAPON_KNIFE_CLASSIC:
+	case WEAPON_KNIFE_FLIP:
+	case WEAPON_KNIFE_GUT:
+	case WEAPON_KNIFE_KARAMBIT:
+	case WEAPON_KNIFE_M9_BAYONET:
+	case WEAPON_KNIFE_TACTICAL:
+	case WEAPON_KNIFE_FALCHION:
+	case WEAPON_KNIFE_SURVIVAL_BOWIE:
+	case WEAPON_KNIFE_BUTTERFLY:
+	case WEAPON_KNIFE_PUSH:
+	case WEAPON_KNIFE_URSUS:
+	case WEAPON_KNIFE_GYPSY_JACKKNIFE:
+	case WEAPON_KNIFE_STILETTO:
+	case WEAPON_KNIFE_WIDOWMAKER:
+		return true;
+	default:
+		return false;
+	}
+}
+
 void CMisc::Console(const char* command) {
 	static int count = 0;
 	ClientCmd_Unrestricted_t args;
