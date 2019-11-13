@@ -69,6 +69,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 }
 
 void PatternScan() {
+	//if im done being lazy i'll add more important offsets here
 	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, "xxxx?????xx????xxx????x????xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
@@ -297,19 +298,19 @@ int main(int argc, char *argv[]) {
 	while (!Memory::hProc) {
 		Memory::Process("csgo.exe");
 		cout << ".";
-		Sleep(200);
+		Sleep(500);
 	}
 	cout << endl << "FINDING 'client_panorama.dll'";
 	while (!Offsets.dwClientSize) {
 		cout << ".";
 		Offsets.dwClient = Memory::Module("client_panorama.dll", Offsets.dwClientSize);
-		Sleep(200);
+		Sleep(500);
 	}
 	cout << endl << "FINDING 'engine.dll'";
 	while (!Offsets.dwEngineSize) {
 		cout << ".";
 		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
-		Sleep(200);
+		Sleep(500);
 	}
 	cout << endl << "DONE" << endl;
 	cout << "------------------------------------" << endl;
@@ -415,8 +416,9 @@ void ActivationThread(){
 	static int OldTeam = 0;
 	//Console("con_filter_text [Happy.exe] ");
 	while (true) {
-		Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
 		isConnected = Memory::Read<int>(Offsets.EngineBase + Offsets.dwClientState_State);
+		Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
+		if (isConnected != 6) Offsets.LocalBase = 0; //temp crash fix
 
 		//UPDATE ON TEAMSWITCH
 		int CurrentTeam = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iTeamNum);
@@ -433,6 +435,7 @@ void ActivationThread(){
 		//cout << "Offsets.dwEngine " << Offsets.dwEngine << endl;
 		//cout << "Offsets.dwEngineSize " << Offsets.dwEngineSize << endl;
 		//cout << "isConnected " << isConnected << endl;
+		//cout << "LocalBase " << Offsets.LocalBase << endl;
 
 		//static int count = 1;
 		//string command = "echo this is the " + std::to_string(count) + " time";
@@ -633,13 +636,14 @@ void ActivationThread(){
 void GlowThread() {
 	while (true) {
 		Sleep(64);
-		if (Settings.ESP.Glow || Settings.Misc.Radar) {
-			if (isConnected != SIGNONSTATE_FULL)
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Radar && !Settings.ESP.Glow)
 				continue;
+
 			Visuals.Glow();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -647,11 +651,14 @@ void GlowThread() {
 void ChamsThread() {
 	while (true) {
 		Sleep(64);
-		if (Settings.ESP.Chams && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.ESP.Chams)
+				continue;
+
 			Visuals.Chams();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -659,13 +666,14 @@ void ChamsThread() {
 void OthersThread() {
 	while (true) {
 		Sleep(64);
-		if (Settings.Misc.Remove_Hands || Settings.Misc.Remove_Ragdoll || Settings.Misc.Remove_Smoke || Settings.Misc.Remove_Fog || Settings.Misc.Nightmode || Settings.Misc.Reduce_Flash || Settings.Misc.Overwrite_FOV || Settings.Misc.Swap_Knife_Hand) {
-			if (isConnected != SIGNONSTATE_FULL)
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Remove_Hands && !Settings.Misc.Remove_Ragdoll && !Settings.Misc.Remove_Smoke && !Settings.Misc.Remove_Fog && !Settings.Misc.Nightmode && !Settings.Misc.Reduce_Flash && !Settings.Misc.Overwrite_FOV && !Settings.Misc.Swap_Knife_Hand)
 				continue;
+
 			Visuals.Others();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -674,13 +682,14 @@ void OthersThread() {
 void TriggerbotThread() {
 	while (true) {
 		Sleep(1);
-		if (Settings.Triggerbot.Triggerbot && isConnected == SIGNONSTATE_FULL) {
-			if (Settings.Triggerbot.Triggerbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_TriggerBot))
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (Settings.Triggerbot.Triggerbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_TriggerBot) || !Settings.Triggerbot.Triggerbot)
 				continue;
+
 			Trigger.Run();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -688,11 +697,14 @@ void TriggerbotThread() {
 void BunnyHopThread() {
 	while (true) {
 		Sleep(1);
-		if (Settings.Misc.Bunnyhop && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Bunnyhop)
+				continue;
+
 			Misc.BunnyHop();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -700,11 +712,14 @@ void BunnyHopThread() {
 void AutoStrafeThread() {
 	while (true) {
 		Sleep(15.625);
-		if (Settings.Misc.Autostrafe && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Autostrafe)
+				continue;
+
 			Misc.AutoStrafe();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -712,24 +727,29 @@ void AutoStrafeThread() {
 void AutoPistolThread() {
 	while (true) {
 		Sleep(15.625);
-		if (Settings.Misc.Autopistol && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Autopistol)
+				continue;
+
 			Misc.Autopistol();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
 
 void FakelagThread() {
 	while (true) {
-		if (Settings.Misc.Fakelag && isConnected == SIGNONSTATE_FULL) {
-			if (Settings.Misc.Fakelag_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Fakelag))
+		Sleep(1);
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (Settings.Misc.Fakelag_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Fakelag) || !Settings.Misc.Fakelag)
 				continue;
+
 			Misc.Fakelag();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -737,13 +757,14 @@ void FakelagThread() {
 void FakelagFixThread() {
 	while (true) {
 		Sleep(10);
-		if (Settings.Misc.Fakelag && isConnected == SIGNONSTATE_FULL) {
-			if (Settings.Misc.Fakelag_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Fakelag))
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (Settings.Misc.Fakelag_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Fakelag) || !Settings.Misc.Fakelag)
 				continue;
+
 			Misc.FakelagFix();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -751,11 +772,14 @@ void FakelagFixThread() {
 void SpammerThread() {
 	while (true) {
 		Sleep(10);
-		if (Settings.Misc.Spammer && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Spammer)
+				continue;
+
 			Misc.ChatSpam();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -763,11 +787,14 @@ void SpammerThread() {
 void BombTimerThread() {
 	while (true) {
 		Sleep(10);
-		if (Settings.Misc.Bomb_Timer && isConnected == SIGNONSTATE_FULL) {
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (!Settings.Misc.Bomb_Timer)
+				continue;
+
 			Visuals.BombTimer();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
@@ -775,24 +802,28 @@ void BombTimerThread() {
 void AimbotThread() {
 	while (true) {
 		Sleep(8); //6.25
-		if (Settings.Aimbot.Aimbot && isConnected == SIGNONSTATE_FULL) {
-			if (Settings.Aimbot.Aimbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Aimbot))
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (Settings.Aimbot.Aimbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Aimbot) || !Settings.Aimbot.Aimbot)
 				continue;
 			Aimbot.Run();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }
 
 void WeaponConfigThread() {
 	while (true) {
-		if (Settings.Misc.Weapon_Config != 0 && isConnected == SIGNONSTATE_FULL) {
+		Sleep(64);
+		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
+			if (Settings.Misc.Weapon_Config == 0)
+				continue;
+
 			Misc.WeaponConfig();
 		}
 		else {
-			Sleep(1000);
+			Sleep(5000);
 		}
 	}
 }

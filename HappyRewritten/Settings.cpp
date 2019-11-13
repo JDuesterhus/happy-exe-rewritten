@@ -207,4 +207,8 @@ void CSettings::LoadConfig(char* path) {
 	if (Aimbot.Aimbot_Smooth_Yaw > 100 || Aimbot.Aimbot_Smooth_Yaw < 0)
 		Aimbot.Aimbot_Smooth_Yaw = 0;
 
+	if (Misc.Reduce_Flash_Alpha <= 0)
+		Misc.Reduce_Flash_Alpha = 1;
+	
+
 }

@@ -175,7 +175,7 @@ void CVisuals::Glow() {
 					}
 					if (Settings.ESP.Glow_Highlight_Flashed) {
 						float entityFlashTime = Memory::Read<float>(sGlowEnt.dwBase + Offsets.m_flFlashMaxAlpha - 0x8);
-						if (entityFlashTime == 255) {
+						if (Settings.Misc.Reduce_Flash && entityFlashTime >= Settings.Misc.Reduce_Flash_Alpha * 0.8 || !Settings.Misc.Reduce_Flash && entityFlashTime >= 255 * 0.8) {
 							R = Settings.Color.Glow_Highlight_Flashed_R;
 							G = Settings.Color.Glow_Highlight_Flashed_G;
 							B = Settings.Color.Glow_Highlight_Flashed_B;
@@ -414,7 +414,7 @@ void CVisuals::Chams() {
 				}
 				if (Settings.ESP.Chams_Highlight_Flashed) {
 					float entityFlashTime = Memory::Read<float>(EntityList + Offsets.m_flFlashMaxAlpha - 0x8);
-					if (entityFlashTime == 255) {
+					if (Settings.Misc.Reduce_Flash && entityFlashTime >= Settings.Misc.Reduce_Flash_Alpha * 0.8 || !Settings.Misc.Reduce_Flash && entityFlashTime >= 255 * 0.8) {
 						R = Settings.Color.Chams_Highlight_Flashed_R;
 						G = Settings.Color.Chams_Highlight_Flashed_G;
 						B = Settings.Color.Chams_Highlight_Flashed_B;
@@ -633,12 +633,8 @@ void CVisuals::Others() {
 		//NO FLASH
 		if (Settings.Misc.Reduce_Flash) {
 			if (classID == CCSPlayer) {
-				int EntityTeam = Memory::Read<int>(EntityList + Offsets.m_iTeamNum);
-				int LocalTeam = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iTeamNum);
-				if (EntityTeam == LocalTeam) {
-					if (GetFlashAlpha(EntityList) != Settings.Misc.Reduce_Flash_Alpha) {
-						Memory::Write<float>(EntityList + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
-					}
+				if (GetFlashAlpha(EntityList) != Settings.Misc.Reduce_Flash_Alpha) {
+					Memory::Write<float>(EntityList + Offsets.m_flFlashMaxAlpha, Settings.Misc.Reduce_Flash_Alpha);
 				}
 			}
 		}
