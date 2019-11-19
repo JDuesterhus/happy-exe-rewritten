@@ -463,9 +463,6 @@ void ActivationThread(){
 		//	Sleep(250);
 		//}
 
-
-		cout << "wepid " << Misc.GetCurrentWeapon(Offsets.LocalBase) << endl;
-
 		//int left = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceLeft);
 		//cout << "+moveleft: " << left << endl;
 		//int right = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceRight);
