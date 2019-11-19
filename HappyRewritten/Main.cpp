@@ -73,6 +73,13 @@ void PatternScan() {
 	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, "xxxx?????xx????xxx????x????xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
+	//Offsets.PostProcessArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xx?????xxxxx????", 16, 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x53, 0x56, 0x57, 0x0F, 0x85, 0x00, 0x00, 0x00, 0x00) + 2;
+	//Offsets.PostProcess = Offsets.PostProcessArray - Offsets.dwClient;
+
+
+	//Offsets.LvlBypassArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x55, 0x08, 0x8B, 0xCA, 0x53);
+	//Offsets.LvlBypass = Offsets.LvlBypassArray - Offsets.dwClient;
+
 	//Offsets.ForceAttack2Array = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xxxx????", 8, 0x70, 0xC7, 0x7D, 0x31, 0x00, 0x00, 0x00, 0x00);
 	//Offsets.ForceAttack2 = Memory::Read<DWORD>(Offsets.ForceAttack2Array - Offsets.dwClient);
 
@@ -81,11 +88,11 @@ void PatternScan() {
 	//Offsets.LobbyInfo = Memory::Read<DWORD>(Offsets.LobbyInfoArray - Offsets.dwClient - 0x1000 + 0x50);
 	
 	
+	//cout << "LvlBypassArray " << hex << Offsets.LvlBypassArray << endl;
+	//cout << "LvlBypass " << hex << Offsets.LvlBypass << endl;
 
 
-		
-	//cout << "ClientCMDArray " << hex << Offsets.ClientCMDArray << endl;
-	//cout << "ClientCMD " << hex << Offsets.ClientCMD << endl;
+
 	cout << dec;
 }
 
@@ -312,6 +319,12 @@ int main(int argc, char *argv[]) {
 		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
 		Sleep(500);
 	}
+	//cout << endl << "FINDING 'vstdlib.dll'";
+	//while (!Offsets.dwVstdlibSize) {
+	//	cout << ".";
+	//	Offsets.dwVstdlib = Memory::Module("vstdlib.dll", Offsets.dwVstdlibSize);
+	//	Sleep(500);
+	//}
 	cout << endl << "DONE" << endl;
 	cout << "------------------------------------" << endl;
 	Sleep(500);
@@ -430,12 +443,12 @@ void ActivationThread(){
 		}
 		OldTeam = CurrentTeam;
 		
+		
 		//cout << "Offsets.dwClient " << Offsets.dwClient << endl;
 		//cout << "Offsets.dwClientSize " << Offsets.dwClientSize << endl;
 		//cout << "Offsets.dwEngine " << Offsets.dwEngine << endl;
 		//cout << "Offsets.dwEngineSize " << Offsets.dwEngineSize << endl;
 		//cout << "isConnected " << isConnected << endl;
-		//cout << "LocalBase " << Offsets.LocalBase << endl;
 
 		//static int count = 1;
 		//string command = "echo this is the " + std::to_string(count) + " time";
@@ -451,6 +464,7 @@ void ActivationThread(){
 		//}
 
 
+		cout << "wepid " << Misc.GetCurrentWeapon(Offsets.LocalBase) << endl;
 
 		//int left = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceLeft);
 		//cout << "+moveleft: " << left << endl;
@@ -556,10 +570,6 @@ void ActivationThread(){
 		if (GetAsyncKeyState(Settings.Hotkey.Panic_Exit) & Pressed) {
 			exit(0);
 		}
-		//if (!Offsets.LocalBase || isConnected != 6) {
-		//	Sleep(250);
-		//	continue; //still needed?
-		//}
 		/* PATCHING GLOW FIX */
 		if (Settings.ESP.Glow && once) {
 			//cout << "patched glow fix" << endl;

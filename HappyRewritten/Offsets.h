@@ -14,6 +14,8 @@ public:
 	DWORD dwClientSize;
 	DWORD dwEngine;
 	DWORD dwEngineSize;
+	//DWORD dwVstdlib;
+	//DWORD dwVstdlibSize;
 
 	void DownloadOffsets();
 	DWORD cs_gamerules_data = 0x0;
