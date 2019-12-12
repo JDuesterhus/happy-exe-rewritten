@@ -100,6 +100,8 @@ void CSettings::LoadConfig(char* path) {
 	Misc.Bomb_Timer =							iniReader.ReadBoolean	("Misc",		"bomb_timer",					Misc.Bomb_Timer);
 	Misc.Swap_Knife_Hand =						iniReader.ReadBoolean	("Misc",		"swap_knife_hand",				Misc.Swap_Knife_Hand);
 	Misc.Weapon_Config =						iniReader.ReadInteger	("Misc",		"weapon_config",				Misc.Weapon_Config);
+	Misc.Window_Compact =						iniReader.ReadBoolean	("Misc",		"window_compact",				Misc.Window_Compact);
+	Misc.Window_Transparency =					iniReader.ReadInteger	("Misc",		"window_transparency",			Misc.Window_Transparency);
 	//[Hotkey]
 	Hotkey.Toggle_Glow =						iniReader.ReadInteger	("Hotkey",		"toggle_glow",					Hotkey.Toggle_Glow);
 	Hotkey.Toggle_Chams =						iniReader.ReadInteger	("Hotkey",		"toggle_cham",					Hotkey.Toggle_Chams);

@@ -122,13 +122,16 @@ void SetConsoleColor(int fg, int bg) {
 }
 
 struct new_bool :numpunct<char> {
-	string_type do_truename() const { return "ON "; }
-	string_type do_falsename() const { return "OFF"; }
+	string_type do_truename() const {
+		return "ON ";
+	}
+	string_type do_falsename() const { 
+		return "OFF";
+	}
 };
 
 void menu() {
 	system("cls");
-	//SetConsoleColor(BLACK, BLACK);
 	cout << "   ______________________________" << endl;
 	cout << endl;
 	cout << " |";
@@ -226,94 +229,23 @@ void menu() {
 int main(int argc, char *argv[]) {
 	//TITLE WITH BUILD DATE/TIME
 	SetConsoleTitle("Happy.exe | Build: " __DATE__ " - " __TIME__);
-	//RESIZE WINDOW
-	HWND ConsoleWindow = GetConsoleWindow();
-	RECT r;
-	GetWindowRect(ConsoleWindow, &r); //stores the console's current dimensions
-	MoveWindow(ConsoleWindow, r.left, r.top, 320, 440, TRUE); // 800 width, 100 height
-	//REMOVE SCROLLBARS
-	HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	GetConsoleScreenBufferInfo(ConsoleHandle, &info);
-	COORD new_size = {
-		info.srWindow.Right - info.srWindow.Left + 1,
-		info.srWindow.Bottom - info.srWindow.Top + 1
-	};
-	SetConsoleScreenBufferSize(ConsoleHandle, new_size);
-	//COOL FROG
-	cout << "DRAW COOL FROG" << endl << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "        ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "    ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "    ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "      ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "              " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "    ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "    ";
-	SetConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
-	cout << "  ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
-	cout << "    ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "  " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "    ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "              ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "        ";
-	SetConsoleColor(RED, RED);
-	cout << "        ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(GREEN, GREEN);
-	cout << "              ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "    " << endl;
-	SetConsoleColor(BLACK, BLACK);
-	cout << "  ";
-	SetConsoleColor(BLUE, BLUE);
-	cout << "              ";
-	SetConsoleColor(BLACK, BLACK);
-	cout << "    " << endl << endl;
-	SetConsoleColor(WHITE, BLACK);
-	cout << "DONE" << endl;
 	//FINDING PROCESS AND MODULES
 	cout << "------------------------------------" << endl;
 	Sleep(500);
-	cout << "FINDING 'csgo.exe'";
+	SetConsoleColor(LIGHT_AQUA, BLACK);
+	cout << "WAITING FOR 'csgo.exe'";
 	while (!Memory::hProc) {
 		Memory::Process("csgo.exe");
 		cout << ".";
 		Sleep(500);
 	}
-	cout << endl << "FINDING 'client_panorama.dll'";
+	cout << endl << "WAITING FOR 'client_panorama.dll'";
 	while (!Offsets.dwClientSize) {
 		cout << ".";
 		Offsets.dwClient = Memory::Module("client_panorama.dll", Offsets.dwClientSize);
 		Sleep(500);
 	}
-	cout << endl << "FINDING 'engine.dll'";
+	cout << endl << "WAITING FOR 'engine.dll'";
 	while (!Offsets.dwEngineSize) {
 		cout << ".";
 		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
@@ -326,8 +258,10 @@ int main(int argc, char *argv[]) {
 	//	Sleep(500);
 	//}
 	cout << endl << "DONE" << endl;
+	SetConsoleColor(WHITE, BLACK);
 	cout << "------------------------------------" << endl;
 	Sleep(500);
+	SetConsoleColor(LIGHT_AQUA, BLACK);
 	//LOADING/DOWNLOADING OFFSETS/NETVARS
 	std::cout << "LOADING OFFSETS/NETVARS" << endl;
 	Offsets.DownloadOffsets();
@@ -337,7 +271,28 @@ int main(int argc, char *argv[]) {
 	//LOADING MAIN CONFIG
 	std::cout << "LOADING 'default.ini'" << endl;
 	Settings.LoadConfig(".\\config\\default.ini");
+	//GETTING CONSOLE HANDLE
+	HWND ConsoleWindow = GetConsoleWindow();
+	//TRANSPARENCY
+	SetWindowLong(ConsoleWindow, GWL_EXSTYLE, GetWindowLong(ConsoleWindow, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(ConsoleWindow, 0, Settings.Misc.Window_Transparency, LWA_ALPHA);
+	//RESIZE WINDOW
+	if (Settings.Misc.Window_Compact) {
+		RECT r;
+		GetWindowRect(ConsoleWindow, &r); //stores the console's current dimensions
+		MoveWindow(ConsoleWindow, r.left, r.top, 320, 440, TRUE); // 800 width, 100 height
+		//REMOVE SCROLLBARS
+		HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO info;
+		GetConsoleScreenBufferInfo(ConsoleHandle, &info);
+		COORD new_size = {
+			info.srWindow.Right - info.srWindow.Left + 1,
+			info.srWindow.Bottom - info.srWindow.Top + 1
+		};
+		SetConsoleScreenBufferSize(ConsoleHandle, new_size);
+	}
 	std::cout << "DONE" << endl;
+	SetConsoleColor(WHITE, BLACK);
 	cout << "------------------------------------" << endl;
 	Sleep(500);
 	Offsets.EngineBase = Memory::Read<DWORD>(Offsets.dwEngine + Offsets.dwClientState);
@@ -443,7 +398,9 @@ void ActivationThread(){
 		}
 		OldTeam = CurrentTeam;
 		
-		
+
+
+
 		//cout << "Offsets.dwClient " << Offsets.dwClient << endl;
 		//cout << "Offsets.dwClientSize " << Offsets.dwClientSize << endl;
 		//cout << "Offsets.dwEngine " << Offsets.dwEngine << endl;
@@ -455,13 +412,15 @@ void ActivationThread(){
 		//const char* commandchar = command.c_str();
 		//Misc.Console(commandchar);
 		//count++;
+		//cout << Memory::Read<int>(Offsets.dwClient + Offsets.dwForceAttack - 36) << endl;
 
-
-		//for (int a = 0; a <= 512; a++) {
-		//	int hex = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack - a);
-		//	cout << a << ": " << hex << endl;
-		//	Sleep(250);
+		//for (int a = -512; a <= 512; a++) {
+		//	int hex = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceAttack + a);
+		//	if (hex == 4 || hex == 5)
+		//		cout << a << ": " << hex << endl;
+		//	Sleep(2);
 		//}
+		//cout << "done" << endl;
 
 		//int left = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceLeft);
 		//cout << "+moveleft: " << left << endl;

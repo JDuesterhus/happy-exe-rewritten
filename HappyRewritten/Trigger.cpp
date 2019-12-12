@@ -16,7 +16,11 @@ void CTrigger::Run(){
 			}
 		}
 		*/
-		if (Settings.Triggerbot.Triggerbot_Dash) {
+		int weaponID = Misc.GetCurrentWeapon(Offsets.LocalBase);
+		if (!Misc.WeaponCanShoot(weaponID))
+			return;
+
+		if (Settings.Triggerbot.Triggerbot_Dash && weaponID != WEAPON_ZEUS) {
 			if (Misc.GetSpeed3D() > DashSpeed())
 				return;
 		}
@@ -27,13 +31,22 @@ void CTrigger::Run(){
 		}
 		if (Settings.Triggerbot.Triggerbot_Check_Zoom) {
 			bool LocalInZoom = Memory::Read<bool>(Offsets.LocalBase + Offsets.m_bIsScoped);
-			if (Misc.WeaponIsSniper(Misc.GetCurrentWeapon(Offsets.LocalBase)) && !LocalInZoom)
+			if (Misc.WeaponIsSniper(weaponID) && !LocalInZoom)
 				return;
 		}
 		int chID = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iCrosshairId);
 		DWORD chBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwEntityList + (chID - 1) * 0x10);
 		if (!chBase)
 			return;
+
+		if (weaponID == WEAPON_ZEUS) {
+			//2do: check for bone pos instead
+			Vector chEntityPos = Memory::Read<Vector>(chBase + Offsets.m_vecOrigin);
+			Vector LocalPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
+			float distance = abs(chEntityPos.x - LocalPos.x) + abs(chEntityPos.y - LocalPos.y) + abs(chEntityPos.z - LocalPos.z);
+			if (distance > 195)
+				return;
+		}
 
 		if (Settings.Triggerbot.Triggerbot_Ignore_Ally) {
 			int chEntityTeam = Memory::Read<int>(chBase + Offsets.m_iTeamNum);

@@ -113,6 +113,8 @@ public:
 		bool Bomb_Timer = false;
 		bool Swap_Knife_Hand = false;
 		int Weapon_Config = 0;
+		bool Window_Compact = true;
+		int Window_Transparency = 255;
 	} Misc;
 
 	struct {
