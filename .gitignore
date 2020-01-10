@@ -40,6 +40,8 @@ HappyRewritten/IniReader.h.old
 HappyRewritten/RSJparser.h
 HappyRewritten/Memory.cpp
 HappyRewritten/Memory.h
+HappyRewritten/json11.cpp
+HappyRewritten/json11.h
 HappyRewritten/offsets.ini
 .vs/
 HappyRewritten/HappyRewritten.vcxproj
