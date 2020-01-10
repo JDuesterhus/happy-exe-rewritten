@@ -121,6 +121,27 @@ void SetConsoleColor(int fg, int bg) {
 	SetConsoleTextAttribute(hConsole, color);
 }
 
+void SetWindow() {
+	//GETTING CONSOLE HANDLE
+	HWND ConsoleWindow = GetConsoleWindow();
+	//SET WINDOW TRANSPARENCY
+	SetWindowLong(ConsoleWindow, GWL_EXSTYLE, GetWindowLong(ConsoleWindow, GWL_EXSTYLE) | WS_EX_LAYERED);
+	SetLayeredWindowAttributes(ConsoleWindow, 0, Settings.Misc.Window_Transparency, LWA_ALPHA);
+	//RESIZE WINDOW
+	RECT dimension;
+	GetWindowRect(ConsoleWindow, &dimension); //stores the console's current dimensions
+	MoveWindow(ConsoleWindow, dimension.left, dimension.top, 320, 440, TRUE);
+	//REMOVE WINDOW SCROLLBARS
+	HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(ConsoleHandle, &info);
+	COORD new_size = {
+		info.srWindow.Right - info.srWindow.Left + 1,
+		info.srWindow.Bottom - info.srWindow.Top + 1
+	};
+	SetConsoleScreenBufferSize(ConsoleHandle, new_size);
+}
+
 struct new_bool :numpunct<char> {
 	string_type do_truename() const {
 		return "ON ";
@@ -228,75 +249,40 @@ void menu() {
 
 int main(int argc, char *argv[]) {
 	//TITLE WITH BUILD DATE/TIME
-	SetConsoleTitle("Happy.exe | Build: " __DATE__ " - " __TIME__);
+	SetConsoleTitle("Happy.exe | " __DATE__ " - " __TIME__ " BUILD");
 	//FINDING PROCESS AND MODULES
 	cout << "------------------------------------" << endl;
-	Sleep(500);
 	SetConsoleColor(LIGHT_AQUA, BLACK);
-	cout << "WAITING FOR 'csgo.exe'";
+	//LOADING MAIN CONFIG
+	Settings.LoadConfig(".\\config\\default.json");
+	SetWindow();
+	Sleep(500);
+	cout << "WAITING FOR GAME";
 	while (!Memory::hProc) {
 		Memory::Process("csgo.exe");
 		cout << ".";
 		Sleep(500);
 	}
-	cout << endl << "WAITING FOR 'client_panorama.dll'";
-	while (!Offsets.dwClientSize) {
+	cout << endl << "WAITING FOR MODULES";
+	while (!Offsets.dwEngineSize && !Offsets.dwClientSize) {
 		cout << ".";
 		Offsets.dwClient = Memory::Module("client_panorama.dll", Offsets.dwClientSize);
-		Sleep(500);
-	}
-	cout << endl << "WAITING FOR 'engine.dll'";
-	while (!Offsets.dwEngineSize) {
-		cout << ".";
 		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
 		Sleep(500);
 	}
-	//cout << endl << "FINDING 'vstdlib.dll'";
-	//while (!Offsets.dwVstdlibSize) {
-	//	cout << ".";
-	//	Offsets.dwVstdlib = Memory::Module("vstdlib.dll", Offsets.dwVstdlibSize);
-	//	Sleep(500);
-	//}
-	cout << endl << "DONE" << endl;
-	SetConsoleColor(WHITE, BLACK);
-	cout << "------------------------------------" << endl;
-	Sleep(500);
-	SetConsoleColor(LIGHT_AQUA, BLACK);
 	//LOADING/DOWNLOADING OFFSETS/NETVARS
-	std::cout << "LOADING OFFSETS/NETVARS" << endl;
+	cout << endl << "LOADING OFFSETS/NETVARS" << endl;
 	Offsets.DownloadOffsets();
-	//SCAN/AUTOUPDATE OFFSETS/NETVARS
-	std::cout << "SCANNING PATTERNS" << endl;
+	Sleep(500);
+	//SCAN OFFSETS/NETVARS
+	cout << "SCANNING PATTERNS" << endl;
 	PatternScan();
-	//LOADING MAIN CONFIG
-	std::cout << "LOADING 'default.ini'" << endl;
-	Settings.LoadConfig(".\\config\\default.ini");
-	//GETTING CONSOLE HANDLE
-	HWND ConsoleWindow = GetConsoleWindow();
-	//TRANSPARENCY
-	SetWindowLong(ConsoleWindow, GWL_EXSTYLE, GetWindowLong(ConsoleWindow, GWL_EXSTYLE) | WS_EX_LAYERED);
-	SetLayeredWindowAttributes(ConsoleWindow, 0, Settings.Misc.Window_Transparency, LWA_ALPHA);
-	//RESIZE WINDOW
-	if (Settings.Misc.Window_Compact) {
-		RECT r;
-		GetWindowRect(ConsoleWindow, &r); //stores the console's current dimensions
-		MoveWindow(ConsoleWindow, r.left, r.top, 320, 440, TRUE); // 800 width, 100 height
-		//REMOVE SCROLLBARS
-		HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-		CONSOLE_SCREEN_BUFFER_INFO info;
-		GetConsoleScreenBufferInfo(ConsoleHandle, &info);
-		COORD new_size = {
-			info.srWindow.Right - info.srWindow.Left + 1,
-			info.srWindow.Bottom - info.srWindow.Top + 1
-		};
-		SetConsoleScreenBufferSize(ConsoleHandle, new_size);
-	}
-	std::cout << "DONE" << endl;
+	Sleep(500);
+	cout << "DONE" << endl;
 	SetConsoleColor(WHITE, BLACK);
 	cout << "------------------------------------" << endl;
 	Sleep(500);
 	Offsets.EngineBase = Memory::Read<DWORD>(Offsets.dwEngine + Offsets.dwClientState);
-	Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
 	//EXECUTE ON EXIT
 	BOOL ret = SetConsoleCtrlHandler(ConsoleHandlerRoutine, TRUE);
 	set_terminate(exiting);
@@ -326,9 +312,7 @@ int main(int argc, char *argv[]) {
 	if (startsound == 16) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START16), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
 	if (startsound == 17) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START17), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
 	if (startsound == 18) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START18), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-
 	menu();
-
 	//THREADS
 	thread Activation_thread = thread(ActivationThread);
 	//thread Game_thread = thread(GameThread);
@@ -428,10 +412,11 @@ void ActivationThread(){
 		//cout << "+moveright: " << right << endl;
 
 		if (GetAsyncKeyState(Settings.Hotkey.Reload_Config) & Pressed) {
-			Settings.LoadConfig(".\\config\\default.ini");
+			Settings.LoadConfig(".\\config\\default.json");
 			PlaySound(MAKEINTRESOURCE(IDR_SOUND_ON), GetModuleHandle(NULL), SND_RESOURCE);
 			once = true;
 			Memory::Write<int>(Offsets.EngineBase + Offsets.clientstate_delta_ticks, -1);
+			SetWindow();
 			menu();
 			Sleep(200);
 		}

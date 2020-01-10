@@ -35,8 +35,12 @@ Release/
 HappyRewritten/Release/
 HappyRewritten/IniReader.cpp
 HappyRewritten/IniReader.h
+HappyRewritten/IniReader.cpp.old
+HappyRewritten/IniReader.h.old
+HappyRewritten/RSJparser.h
 HappyRewritten/Memory.cpp
 HappyRewritten/Memory.h
+HappyRewritten/offsets.ini
 .vs/
 HappyRewritten/HappyRewritten.vcxproj
 HappyRewritten/HappyRewritten.vcxproj.filters

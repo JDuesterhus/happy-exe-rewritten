@@ -2,12 +2,17 @@
 
 #include <iostream>
 #include <Windows.h>
+#include <string>
+#include <fstream>
+#include <streambuf>
 #include "IniReader.h"
+#include "json11.hpp"
 
 class CSettings
 {
 public:
 	void LoadConfig(char* path);
+	std::string text;
 
 	struct {
 		bool Glow = true;
@@ -113,7 +118,7 @@ public:
 		bool Bomb_Timer = false;
 		bool Swap_Knife_Hand = false;
 		int Weapon_Config = 0;
-		bool Window_Compact = true;
+		std::string Offset_URL = u8"https://raw.githubusercontent.com/Akandesh/blazedumper/master/csgo.json";
 		int Window_Transparency = 255;
 	} Misc;
 

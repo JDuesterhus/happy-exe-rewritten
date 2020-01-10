@@ -183,7 +183,7 @@ void CVisuals::Glow() {
 					}
 					if (Settings.ESP.Glow_Highlight_Defuser) {
 						bool entityDefusing = Memory::Read<bool>(sGlowEnt.dwBase + Offsets.m_bIsDefusing);
-						bool entityGrabbingHostage = Memory::Read<bool>(sGlowEnt.dwBase + Offsets.m_bIsGrabbingHostage);
+						bool entityGrabbingHostage = Memory::Read<bool>(sGlowEnt.dwBase + Offsets.m_bIsDefusing + 0x1); //m_bIsGrabbingHostage
 						if (entityDefusing || entityGrabbingHostage) {
 							R = Settings.Color.Glow_Highlight_Defuser_R;
 							G = Settings.Color.Glow_Highlight_Defuser_G;
@@ -206,7 +206,8 @@ void CVisuals::Glow() {
 
 				//std::cout << "glowing player..." << std::endl;
 				if (entityTeam == localTeam && Settings.ESP.Glow_Ally || entityTeam != localTeam && Settings.ESP.Glow_Enemy)
-				GlowEntity(pEntity, R, G, B, Settings.ESP.Glow_Alpha, Settings.ESP.Glow_Style);
+					GlowEntity(pEntity, R, G, B, Settings.ESP.Glow_Alpha, Settings.ESP.Glow_Style);
+
 			}
 
 		}

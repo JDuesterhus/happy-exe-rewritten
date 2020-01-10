@@ -1,15 +1,20 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <streambuf>
 #include <Windows.h>
 #include <wininet.h>
-#include "IniReader.h"
-
+#include "Settings.h"
+#include "json11.hpp"
 
 class COffsets
 {
-public:
+private:
+	std::string text;
 
+public:
 	DWORD dwClient;
 	DWORD dwClientSize;
 	DWORD dwEngine;
