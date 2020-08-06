@@ -5,11 +5,13 @@
 #include "Offsets.h"
 #include "define.h"
 #include "Settings.h"
-#include "vector.h"
+#include "Aimbot.h"
+//#include "vector.h"
 
 #include <cstdlib>
 #include <iomanip>
 #include <sys/timeb.h>
+
 
 
 class CVisuals
@@ -20,6 +22,7 @@ public:
 	void Others();
 	void BombTimer();
 private:
+
 	struct csGlowEnt {
 		DWORD dwBase;						//4 bytes
 		float r;							//4 bytes
@@ -67,7 +70,9 @@ private:
 	bool EntityIsBomb(int id);
 	bool EntityIsOther(int id);
 	float GetFlashAlpha(DWORD base);
-
+	//const char* GetMapName();
+	//const char* GetMapDir();
+	//static std::string GetGameDir();
 };
 
 extern CVisuals Visuals;

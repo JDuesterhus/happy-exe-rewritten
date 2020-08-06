@@ -17,7 +17,7 @@ void CTrigger::Run(){
 		}
 		*/
 		int weaponID = Misc.GetCurrentWeapon(Offsets.LocalBase);
-		if (!Misc.WeaponCanShoot(weaponID))
+		if (!Misc.WeaponValid(weaponID))
 			return;
 
 		if (Settings.Triggerbot.Triggerbot_Dash && weaponID != WEAPON_ZEUS) {
@@ -40,7 +40,7 @@ void CTrigger::Run(){
 			return;
 
 		if (weaponID == WEAPON_ZEUS) {
-			//2do: check for bone pos instead
+			//check for bone pos instead
 			Vector chEntityPos = Memory::Read<Vector>(chBase + Offsets.m_vecOrigin);
 			Vector LocalPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
 			float distance = abs(chEntityPos.x - LocalPos.x) + abs(chEntityPos.y - LocalPos.y) + abs(chEntityPos.z - LocalPos.z);

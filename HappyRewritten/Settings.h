@@ -6,7 +6,7 @@
 #include <fstream>
 #include <streambuf>
 #include "IniReader.h"
-#include "json11.hpp"
+//#include "json11.hpp"
 
 class CSettings
 {
@@ -51,6 +51,8 @@ public:
 	struct {
 		bool Aimbot = true;
 		bool Aimbot_Hotkey = true;
+		//bool Aimbot_Silent = false;
+		//int Aimbot_Silent_Strength = 80;
 		int Aimbot_Bone = 8;
 		int Aimbot_Bone2 = 7;
 		int Aimbot_Bone2_AfterShots = 4;

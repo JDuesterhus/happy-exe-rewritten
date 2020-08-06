@@ -11,24 +11,243 @@ void CAimbot::DropTarget() {
 
 
 
-void CAimbot::Run() {
-	Vector AimAngle; //move
+void CAimbot::Normal() {
 	//DropTarget();
-	if (Misc.WeaponCanShoot(Misc.GetCurrentWeapon(Offsets.LocalBase)) && !Misc.IsReloading(Offsets.LocalBase)) {
-		Target = FindBestTarget();
-		if (Target > 0) {
-			AimAngle = CalcAngle(MyEyePosition(), BonePos(EntBoneMatrix(EntBase(Target)), bone), Settings.Aimbot.RCS_Pitch, Settings.Aimbot.RCS_Yaw);
-			//NormalizeAngle(AimAngle);
-			AimAngle = SmoothAngle(MyViewAngle(), AimAngle, Settings.Aimbot.Aimbot_Smooth_Pitch, Settings.Aimbot.Aimbot_Smooth_Yaw);
-			AimAngle = NormalizeAngle(AimAngle);
-			AimAngle = ClampAngle(AimAngle);
-			Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
-		}
-		else {
-			Target = -1;
+	if (Misc.WeaponValid(Misc.GetCurrentWeapon(Offsets.LocalBase))) {
+		if (!Misc.IsReloading(Offsets.LocalBase)) {
+			static int oldTarget = -1;
+			Target = FindBestTarget();
+			if (Target > 0) {
+				Vector AimAngle;
+				AimAngle = CalcAngle(MyEyePosition(), BonePos(EntBoneMatrix(EntBase(Target)), bone), Settings.Aimbot.RCS_Pitch, Settings.Aimbot.RCS_Yaw);
+				AimAngle = SmoothAngle(MyViewAngle(), AimAngle, Settings.Aimbot.Aimbot_Smooth_Pitch, Settings.Aimbot.Aimbot_Smooth_Yaw);
+				AimAngle = NormalizeAngle(AimAngle);
+				AimAngle = ClampAngle(AimAngle);
+				Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+				oldTarget = Target;
+			}
+			else {
+				Target = -1;
+			}
 		}
 	}
 }
+
+//float RandomFloat(float min, float max) {
+//	std::uniform_real<float> ur(min, max);
+//	std::random_device rd;
+//	std::mt19937 mte(rd());
+//	return ur(mte);
+//}
+
+//void CAimbot::AntiAim() {
+//	for (int x = 1; x <= 8; x++) {
+//		Vector antiaim;
+//		if (x == 1) {
+//			antiaim.y = 0;
+//		}
+//		if (x == 2) {
+//			antiaim.y = 45;
+//		}
+//		if (x == 3) {
+//			antiaim.y = 90;
+//		}
+//		if (x == 4) {
+//			antiaim.y = 135;
+//		}
+//		if (x == 5) {
+//			antiaim.y = 180;
+//		}
+//		if (x == 6) {
+//			antiaim.y = 225;
+//		}
+//		if (x == 7) {
+//			antiaim.y = 270;
+//		}
+//		if (x == 8) {
+//			antiaim.y = 315;
+//		}
+//		Vector aimpunch;
+//		aimpunch.x = 0;
+//		aimpunch.y = 0;
+//		aimpunch.z = 0;
+//
+//		//antiaim = NormalizeAngle(antiaim);
+//		//antiaim = ClampAngle(antiaim);
+//
+//		Vector MyAngle = Aimbot.MyViewAngle();
+//		Vector AimAngle;
+//		AimAngle.y = MyAngle.y - 45;
+//		AimAngle = NormalizeAngle(AimAngle);
+//		AimAngle = ClampAngle(AimAngle);
+//
+//		Vector MyAngleDiff;
+//		MyAngleDiff = MyAngle + antiaim;
+//		MyAngleDiff = NormalizeAngle(MyAngleDiff);
+//		MyAngleDiff = ClampAngle(MyAngleDiff);
+//
+//
+//		for (int x = 1; x <= 256; x++) {
+//			//Memory::Write<Vector>(Offsets.LocalBase + Offsets.m_aimPunchAngle, aimpunch);
+//			Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+//			Memory::Write<Vector>(Offsets.LocalBase + Offsets.m_viewPunchAngle, MyAngleDiff);
+//			if (x == 32) Sleep(1);
+//			if (x == 64) Sleep(1);
+//			if (x == 96) Sleep(1);
+//			if (x == 128) Sleep(1);
+//			if (x == 160) Sleep(1);
+//			if (x == 192) Sleep(1);
+//			if (x == 224) Sleep(1);
+//		}
+//		Sleep(1000);
+//	}
+//}
+
+
+//void CAimbot::RCS() {
+//	static Vector PrevAimPunch;
+//	static Vector AimPunch1;
+//	static Vector AimPunch;
+//	static Vector AimAngle;
+//	AimPunch = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_aimPunchAngle);
+//
+//	Vector SmoothPunch;
+//	SmoothPunch.x = SmoothPunch.x * 0.2 + AimPunch.x * (1 - 0.2);
+//	SmoothPunch.y = SmoothPunch.y * 0.2 + AimPunch.y * (1 - 0.2);
+//	AimAngle = Memory::Read<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles);
+//	if (Misc.WeaponIsAutomatic(Misc.GetCurrentWeapon(Offsets.LocalBase)) && !Misc.IsReloading(Offsets.LocalBase)) {
+//		DWORD WeaponEntity = Misc.GetWeaponEntity(Offsets.LocalBase);
+//		int WeaponClip = Memory::Read<int>(WeaponEntity + Offsets.m_iClip1);
+//		if (WeaponClip > 0) {
+//			if (Misc.IsAttacking() || Misc.GetShotsFired(Offsets.LocalBase) > 1) {
+//				//Vector PretictedAngle;
+//				static int PrevShots = 0;
+//				//std::cout << "AimPunchx: " << AimPunch.x << std::endl;
+//				//std::cout << "AimPunchy: " << AimPunch.y << std::endl;
+//				//Vector src = AimAngle;
+//				//RandomFloat(1, 2)
+//				AimAngle.x -= (AimPunch.x - PrevAimPunch.x) * 1;
+//				AimAngle.y -= (AimPunch.y - PrevAimPunch.y) * 1;
+//				Vector src;
+//				src = Memory::Read<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles);
+//				//AimAngle = SmoothAngle(src, AimAngle, 0.11, 0.24);
+//				//AimAngle = NormalizeAngle(AimAngle);
+//				//AimAngle = ClampAngle(AimAngle);
+//
+//				//Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+//
+//				AimAngle = SmoothAngle(MyViewAngle(), AimAngle, 10, 10);
+//				AimAngle = NormalizeAngle(AimAngle);
+//				AimAngle = ClampAngle(AimAngle);
+//				Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+//
+//
+//
+//				Sleep(1);
+//				//AimAngle = SmoothAngle(src, AimAngle, 4, 4);
+//				//AimAngle = NormalizeAngle(AimAngle);
+//				//AimAngle = ClampAngle(AimAngle);
+//				//while (AimPunch.x < (PrevAimPunch.x + 1) || AimPunch.y < (PrevAimPunch.y + 1) || AimPunch.x > (PrevAimPunch.x - 1) || AimPunch.y > (PrevAimPunch.y - 1)) {
+//				//
+//				//	std::cout << "changing angles" << std::endl;
+//				//	Sleep(1);
+//				//
+//				//
+//				//}
+//				//if (AimPunch.x > (PrevAimPunch.x + 1) || AimPunch.y > (PrevAimPunch.y + 1) || AimPunch.x <(PrevAimPunch.x - 1) || AimPunch.y < (PrevAimPunch.y - 1)) {
+//				//	src = Memory::Read<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles);
+//				//	AimPunch = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_aimPunchAngle);
+//				//	AimAngle = SmoothAngle(src, AimAngle, 0, 0);
+//				//	AimAngle = NormalizeAngle(AimAngle);
+//				//	AimAngle = ClampAngle(AimAngle);
+//				//	Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+//				//
+//				//}
+//				PrevAimPunch.x = SmoothPunch.x;
+//				PrevAimPunch.y = SmoothPunch.y;
+//				//else {
+//				//
+//				//
+//				//	std::cout << "NOT changing angles" << std::endl;
+//				//}
+//
+//			}
+//			if (!Misc.IsAttacking() && Misc.GetShotsFired(Offsets.LocalBase) == 0) {
+//				PrevAimPunch.x = SmoothPunch.x;
+//				PrevAimPunch.y = SmoothPunch.y;
+//			}
+//		}
+//	}
+//}
+
+
+
+//static NTSTATUS(__stdcall* NtDelayExecution)(BOOL Alertable, PLARGE_INTEGER DelayInterval) = (NTSTATUS(__stdcall*)(BOOL, PLARGE_INTEGER)) GetProcAddress(GetModuleHandle("ntdll.dll"), "NtDelayExecution");
+//static NTSTATUS(__stdcall* ZwSetTimerResolution)(IN ULONG RequestedResolution, IN BOOLEAN Set, OUT PULONG ActualResolution) = (NTSTATUS(__stdcall*)(ULONG, BOOLEAN, PULONG)) GetProcAddress(GetModuleHandle("ntdll.dll"), "ZwSetTimerResolution");
+//
+//static void SleepShort(float milliseconds) {
+//	static bool once = true;
+//	if (once) {
+//		ULONG actualResolution;
+//		ZwSetTimerResolution(1, true, &actualResolution); 
+//		once = false;
+//	}
+//
+//	LARGE_INTEGER interval;
+//	interval.QuadPart = -1 * (int)(milliseconds * 10000.0f);
+//	NtDelayExecution(false, &interval);
+//}
+
+//void CAimbot::Silent() {
+//	Vector AimAngle; //move
+//	if (Misc.WeaponValid(Misc.GetCurrentWeapon(Offsets.LocalBase))) {
+//		if (!Misc.IsReloading(Offsets.LocalBase)) {
+//			if (CanShoot()) {
+//				Target = FindBestTarget();
+//				if (Target > 0) {
+//					AimAngle = CalcAngle(MyEyePosition(), BonePos(EntBoneMatrix(EntBase(Target)), bone), Settings.Aimbot.RCS_Pitch, Settings.Aimbot.RCS_Yaw);
+//					AimAngle = NormalizeAngle(AimAngle);
+//					AimAngle = ClampAngle(AimAngle);
+//					Vector nullvector;
+//					nullvector.x = 0;
+//					nullvector.y = 0;
+//					nullvector.z = 0;
+//					Vector MyAngle = MyViewAngle();
+//					Vector MyAngleDiff;
+//					MyAngleDiff.y = MyAngle.y - AimAngle.y;
+//					MyAngleDiff.x = MyAngle.x - AimAngle.x;
+//					for (int x = 1; x <= 256; x++) {
+//						Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, false);
+//						Memory::Write<Vector>(Offsets.LocalBase + Offsets.m_viewPunchAngle, MyAngleDiff); //FAKE ANGLE
+//						if (x >= 16 && x <= 64) Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle); //REAL ANGLE
+//						if (x == 16) Sleep(1);
+//						//if (x == 128) SleepShort(0.5);
+//					}
+//					SleepShort((Settings.Aimbot.Aimbot_Silent_Strength + 25) / 100 * 2);
+//					MyAngle = MyViewAngle();
+//					MyAngle.y = MyAngle.y + MyAngleDiff.y;
+//					MyAngle.x = MyAngle.x + MyAngleDiff.x;
+//					for (int x = 1; x <= 256; x++) {
+//						Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, true);
+//						Memory::Write<Vector>(Offsets.LocalBase + Offsets.m_viewPunchAngle, nullvector); //FAKE ANGLE
+//						Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, MyAngle); //REAL ANGLE
+//						//if (x == 32) Sleep(1);
+//						//if (x == 128) SleepShort(0.5);
+//					}
+//					//Sleep((-Settings.Aimbot.Aimbot_Silent_Strength + 105) * 4);
+//				}
+//				else {
+//					Target = -1;
+//				}
+//			}
+//		}
+//	}
+//}
+
+
+
+
+
 
 void CAimbot::TwoHP() {
 	if (Misc.GetCurrentWeapon(Offsets.LocalBase) == WEAPON_HEGRENADE) {
@@ -48,11 +267,11 @@ void CAimbot::TwoHP() {
 			Sleep(1);
 		} while (Angle.x > -88.99);
 		//throw nade
-		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2, 5);
+		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -96, 5);
 		Sleep(200);
 		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack, 5);
-		Sleep(80); //78-82
-		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2, 4);
+		Sleep(80); //78-82 
+		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -96, 4);
 		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack, 4);
 		Sleep(220);
 		//knife
@@ -133,6 +352,7 @@ int CAimbot::FindBestTarget() {
 
 	}; EntityInfo Ent;
 
+
 	for (int i = 1; i <= 64; i++) {
 		if (Settings.Aimbot.Aimbot_Check_Flash) {
 			float LocalFlashAlpha = Memory::Read<float>(Offsets.LocalBase + Offsets.m_flFlashMaxAlpha - 0x8);
@@ -202,8 +422,9 @@ int CAimbot::FindBestTarget() {
 		Sleep(8);
 	}
 	//RETARGET DELAY
-	if (Target != TargetOld && TargetOld != -1) {
-		if (Ent.Health[TargetOld] < 1) {
+	if (Target != TargetOld) {
+		Sleep(Settings.Aimbot.Aimbot_Delay);
+		if (Ent.Health[TargetOld] < 1 && TargetOld != -1) {
 			Sleep(Settings.Aimbot.Aimbot_Delay_Kill);
 		}
 	}
@@ -237,6 +458,10 @@ float CAimbot::AngleDiff(Vector angle, Vector src, Vector dst) {
 
 float CAimbot::VecDist(Vector& fVec1, Vector& fVec2) {
 	return FASTSQRT(powf(fVec1.x - fVec2.x, 2) + powf(fVec1.y - fVec2.y, 2) + powf(fVec1.z - fVec2.z, 2));
+}
+
+float CAimbot::VecDist2D(Vector& fVec1, Vector& fVec2) {
+	return FASTSQRT(powf(fVec1.x - fVec2.x, 2) + powf(fVec1.y - fVec2.y, 2));
 }
 
 
@@ -379,7 +604,20 @@ Vector CAimbot::NormalizeAngle(Vector angle) {
 	return angle;
 }
 
-
+bool CAimbot::CanShoot() {
+	DWORD WeaponEntity = Misc.GetWeaponEntity(Offsets.LocalBase);
+	int WeaponClip = Memory::Read<int>(WeaponEntity + Offsets.m_iClip1);
+	if (WeaponClip > 0) {
+		int tickbase = Memory::Read<int>(Offsets.LocalBase + Offsets.m_nTickBase);
+		CGlobalVarsBase var = Memory::Read<CGlobalVarsBase>(Offsets.dwEngine + Offsets.dwGlobalVars);
+		float servertime = tickbase * var.interval_per_tick;
+		float nextattack = Memory::Read<float>(WeaponEntity + Offsets.m_flNextPrimaryAttack);
+		if (nextattack < servertime) {
+			return true;
+		}
+	}
+	return false;
+}
 
 
 /*

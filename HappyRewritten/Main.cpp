@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <Windows.h>
 #include <thread>
 #include <cstdlib>
@@ -27,8 +28,8 @@
 using namespace std;
 
 int isConnected;
-HWND WindowCSGO;
-HWND WindowCurrent;
+//HWND WindowCSGO;
+//HWND WindowCurrent;
 
 void ActivationThread();
 //void GameThread();
@@ -44,6 +45,7 @@ void FakelagFixThread();
 void SpammerThread();
 void BombTimerThread();
 void AimbotThread();
+//void RCSThread();
 void WeaponConfigThread();
 
 Memory Mem;
@@ -69,7 +71,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 }
 
 void PatternScan() {
-	//if im done being lazy i'll add more important offsets here
+	//if im done being lazy i'll add more important offset scans here
 	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, "xxxx?????xx????xxx????x????xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
@@ -90,10 +92,7 @@ void PatternScan() {
 	
 	//cout << "LvlBypassArray " << hex << Offsets.LvlBypassArray << endl;
 	//cout << "LvlBypass " << hex << Offsets.LvlBypass << endl;
-
-
-
-	cout << dec;
+	//cout << dec;
 }
 
 enum ConsolColor {
@@ -254,7 +253,7 @@ int main(int argc, char *argv[]) {
 	cout << "------------------------------------" << endl;
 	SetConsoleColor(LIGHT_AQUA, BLACK);
 	//LOADING MAIN CONFIG
-	Settings.LoadConfig(".\\config\\default.json");
+	Settings.LoadConfig(".\\config\\default.ini");
 	SetWindow();
 	Sleep(500);
 	cout << "WAITING FOR GAME";
@@ -266,10 +265,15 @@ int main(int argc, char *argv[]) {
 	cout << endl << "WAITING FOR MODULES";
 	while (!Offsets.dwEngineSize && !Offsets.dwClientSize) {
 		cout << ".";
-		Offsets.dwClient = Memory::Module("client_panorama.dll", Offsets.dwClientSize);
+		Offsets.dwClient = Memory::Module("client.dll", Offsets.dwClientSize);
 		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
 		Sleep(500);
 	}
+	//cout << "client_panorama raw: " << Offsets.dwClient << endl;
+	//cout << "engine raw: " << Offsets.dwEngine << endl;
+	//cout << "client_panorama size: " << Offsets.dwClientSize << endl;
+	//cout << "engine size: " << Offsets.dwEngineSize << endl;
+	//Sleep(5000);
 	//LOADING/DOWNLOADING OFFSETS/NETVARS
 	cout << endl << "LOADING OFFSETS/NETVARS" << endl;
 	Offsets.DownloadOffsets();
@@ -328,6 +332,7 @@ int main(int argc, char *argv[]) {
 	thread Spammer_thread = thread(SpammerThread);
 	thread BombTimer_thread = thread(BombTimerThread);
 	thread Aimbot_thread = thread(AimbotThread);
+	//thread RCS_thread = thread(RCSThread);
 	thread WeaponConfig_thread = thread(WeaponConfigThread);
 
 	Activation_thread.join();
@@ -344,6 +349,7 @@ int main(int argc, char *argv[]) {
 	Spammer_thread.join();
 	BombTimer_thread.join();
 	Aimbot_thread.join();
+	//RCS_thread.join();
 	WeaponConfig_thread.join();
 
 	return(EXIT_SUCCESS);
@@ -366,7 +372,6 @@ void Activation(bool boolean) {
 void ActivationThread(){
 	bool once = Settings.ESP.Glow;
 	static int OldTeam = 0;
-	//Console("con_filter_text [Happy.exe] ");
 	while (true) {
 		isConnected = Memory::Read<int>(Offsets.EngineBase + Offsets.dwClientState_State);
 		Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
@@ -377,42 +382,13 @@ void ActivationThread(){
 		int CurrentHealth = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iHealth);
 		if (CurrentTeam != OldTeam) {
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.force_update_spectator_glow, 0x74);
-			Sleep(750);
+			Sleep(1000);
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.force_update_spectator_glow, 0xEB);
 		}
 		OldTeam = CurrentTeam;
-		
-
-
-
-		//cout << "Offsets.dwClient " << Offsets.dwClient << endl;
-		//cout << "Offsets.dwClientSize " << Offsets.dwClientSize << endl;
-		//cout << "Offsets.dwEngine " << Offsets.dwEngine << endl;
-		//cout << "Offsets.dwEngineSize " << Offsets.dwEngineSize << endl;
-		//cout << "isConnected " << isConnected << endl;
-
-		//static int count = 1;
-		//string command = "echo this is the " + std::to_string(count) + " time";
-		//const char* commandchar = command.c_str();
-		//Misc.Console(commandchar);
-		//count++;
-		//cout << Memory::Read<int>(Offsets.dwClient + Offsets.dwForceAttack - 36) << endl;
-
-		//for (int a = -512; a <= 512; a++) {
-		//	int hex = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceAttack + a);
-		//	if (hex == 4 || hex == 5)
-		//		cout << a << ": " << hex << endl;
-		//	Sleep(2);
-		//}
-		//cout << "done" << endl;
-
-		//int left = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceLeft);
-		//cout << "+moveleft: " << left << endl;
-		//int right = Memory::Read<int>(Offsets.dwClient + Offsets.dwForceRight);
-		//cout << "+moveright: " << right << endl;
 
 		if (GetAsyncKeyState(Settings.Hotkey.Reload_Config) & Pressed) {
-			Settings.LoadConfig(".\\config\\default.json");
+			Settings.LoadConfig(".\\config\\default.ini");
 			PlaySound(MAKEINTRESOURCE(IDR_SOUND_ON), GetModuleHandle(NULL), SND_RESOURCE);
 			once = true;
 			Memory::Write<int>(Offsets.EngineBase + Offsets.clientstate_delta_ticks, -1);
@@ -511,15 +487,13 @@ void ActivationThread(){
 		if (GetAsyncKeyState(Settings.Hotkey.Panic_Exit) & Pressed) {
 			exit(0);
 		}
-		/* PATCHING GLOW FIX */
+		// PATCHING GLOW FIX
 		if (Settings.ESP.Glow && once) {
-			//cout << "patched glow fix" << endl;
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.force_update_spectator_glow, 0xEB);
 			once = false;
 		}
-		/* UNPATCHING GLOW FIX */
+		// UNPATCHING GLOW FIX
 		if (!Settings.ESP.Glow && once) {
-			//cout << "unpatched glow fix" << endl;
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.force_update_spectator_glow, 0x74);
 			once = false;
 		}
@@ -527,6 +501,8 @@ void ActivationThread(){
 	}
 }
 
+//ignore
+//this is for automatic reattaching if the game closes/crashes but i need to do some changes to the memory class before
 //void GameThread() {
 //	static bool GameFound = false;
 //	static bool GameAttached = false;
@@ -582,8 +558,6 @@ void ActivationThread(){
 //}
 
 
-
-
 void GlowThread() {
 	while (true) {
 		Sleep(64);
@@ -628,7 +602,6 @@ void OthersThread() {
 		}
 	}
 }
-
 
 void TriggerbotThread() {
 	while (true) {
@@ -752,11 +725,14 @@ void BombTimerThread() {
 
 void AimbotThread() {
 	while (true) {
-		Sleep(8); //6.25
+		Sleep(6.25);
 		if (isConnected == SIGNONSTATE_FULL && Offsets.LocalBase != 0) {
 			if (Settings.Aimbot.Aimbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Aimbot) || !Settings.Aimbot.Aimbot)
 				continue;
-			Aimbot.Run();
+			//if (!Settings.Aimbot.Aimbot_Silent)
+				Aimbot.Normal();
+			//if (Settings.Aimbot.Aimbot_Silent)
+			//	Aimbot.Silent();
 		}
 		else {
 			Sleep(5000);

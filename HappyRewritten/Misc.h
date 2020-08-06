@@ -34,7 +34,8 @@ public:
 	float GetWeaponAccuracy(DWORD base);
 	int GetShotsFired(DWORD base);
 	//int GetShotsFiredPistol();
-	bool WeaponCanShoot(int id);
+	bool WeaponValid(int id);
+	bool WeaponIsAutomatic(int id);
 	bool WeaponIsPistol(int id);
 	bool WeaponIsSniper(int id);
 	bool WeaponIsKnife(int id);

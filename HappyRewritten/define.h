@@ -6,6 +6,7 @@
 #define Pressed 0x8000
 
 //Flags
+//I should really use bitwise operators instead
 #define FL_ON_GROUND 257 //769
 #define FL_ON_GROUND_CROUCHED 263 //775
 #define FL_ON_GROUND_MOVING_TO_STAND 259

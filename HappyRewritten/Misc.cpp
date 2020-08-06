@@ -3,7 +3,7 @@
 CMisc Misc;
 
 
-//proper autopistol takes too much cpu performance
+//HERE IS A "PROPER" AUTOPISTOL BUT IT TAKES UP MORE CPU AND IS ASYNCED ANYWAYS BECAUSE WERE EXTERNAL
 //if (IsAttacking()) {
 //	if (WeaponIsPistol(GetCurrentWeapon(Offsets.LocalBase))) {
 //		while (GetAsyncKeyState(VK_LBUTTON)) {
@@ -70,6 +70,7 @@ void CMisc::BunnyHop() {
 			if (Settings.Misc.Fakelag && JumpState == 7)
 				Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, true);
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceJump, JumpState);
+	
 			Sleep(1);
 		}
 	}
@@ -78,7 +79,7 @@ void CMisc::BunnyHop() {
 
 void CMisc::AutoStrafe() {
 	static bool movementfix = false;
-	if (Misc.GetSpeed2D() >= 35) { //replace >= 0 with old one
+	if (Misc.GetSpeed2D() >= 35) { 
 		static Vector PrevViewAngle;
 		Vector StrafeAngles = Memory::Read<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles);
 		if (GetFlags(Offsets.LocalBase) == FL_IN_AIR_STAND || GetFlags(Offsets.LocalBase) == FL_IN_AIR_CROUCHED) {
@@ -147,7 +148,7 @@ void CMisc::AutoStrafe() {
 
 void CMisc::Fakelag() {
 	Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, false);
-	Sleep(15.625 * Settings.Misc.Fakelag_Ticks);
+	Sleep(15.625 * Settings.Misc.Fakelag_Ticks); //GOOD ENOUGH
 	Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, true);
 	Sleep(15.625 * Settings.Misc.Fakelag_Ticks);
 }
@@ -205,8 +206,6 @@ void CMisc::WeaponConfig() {
 	bool loadcfg = true;
 	static int PreviousWeapon = 0;
 	int CurrentWeapon = GetCurrentWeapon(Offsets.LocalBase);
-	//std::cout << "wepid: " << CurrentWeapon << std::endl;
-	//std::cout << "pwepid: " << PreviousWeapon << std::endl;
 	if (CurrentWeapon != PreviousWeapon) {
 		//CONFIG FOR WEAPON GROUPS
 		if (Settings.Misc.Weapon_Config == 1) {
@@ -414,9 +413,6 @@ void CMisc::WeaponConfig() {
 		}
 		if (loadcfg) {
 			Settings.LoadConfig(cfgpath);
-			//std::cout << "Loaded CFG" << std::endl;
-			//std::cout << "WepID: " << GetCurrentWeapon(Offsets.LocalBase) << std::endl;
-			//std::cout << "Path: " << cfgpath << std::endl;
 		}
 	}
 	Sleep(100);
@@ -476,8 +472,8 @@ DWORD CMisc::GetWeaponEntity(DWORD base) {
 }
 
 int CMisc::GetCurrentWeapon(DWORD base) {
-	int weaponID = Memory::Read<int>(GetWeaponEntity(base) + Offsets.m_iItemDefinitionIndex); //
-	if (weaponID >= 262144) weaponID -= 262144; //weird skin "bugfix"
+	int weaponID = Memory::Read<int>(GetWeaponEntity(base) + Offsets.m_iItemDefinitionIndex);
+	if (weaponID >= 262144) weaponID -= 262144; //weird skin "bugfix" | check later if i still need this
 	return weaponID;
 }
 
@@ -496,7 +492,7 @@ bool CMisc::IsAttacking() {
 	switch (inAttack) {
 	case 1:
 	case 5:
-	//case 6:
+	//case 6: //this is MWHEELUP/MWHEELDOWN
 	case 7:
 		return true;
 	default:
@@ -505,11 +501,11 @@ bool CMisc::IsAttacking() {
 }
 
 bool CMisc::IsAttacking2() {
-	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack - 0x54);
+	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack + -96);
 	switch (inAttack2) {
 	case 1:
 	case 5:
-	//case 6:
+	//case 6: //this is MWHEELUP/MWHEELDOWN
 	case 7:
 		return true;
 	default:
@@ -543,7 +539,7 @@ float CMisc::GetSpeed1D() {
 	return speed;
 }
 
-bool CMisc::WeaponCanShoot(int id) {
+bool CMisc::WeaponValid(int id) {
 	switch (id) {
 	case WEAPON_DEAGLE:
 	case WEAPON_ELITE:
@@ -586,6 +582,35 @@ bool CMisc::WeaponCanShoot(int id) {
 	}
 }
 
+bool CMisc::WeaponIsAutomatic(int id) {
+	switch (id) {
+	case WEAPON_AK47:
+	case WEAPON_AUG:
+	case WEAPON_FAMAS:
+	case WEAPON_G3SG1:
+	case WEAPON_GALIL:
+	case WEAPON_M249:
+	case WEAPON_M4A4:
+	case WEAPON_MAC10:
+	case WEAPON_P90:
+	case WEAPON_MP5SD:
+	case WEAPON_UMP45:
+	case WEAPON_XM1014:
+	case WEAPON_BIZON:
+	case WEAPON_NEGEV:
+	case WEAPON_MP7:
+	case WEAPON_MP9:
+	case WEAPON_SCAR20:
+	case WEAPON_SG553:
+	case WEAPON_M4A1S:
+	case WEAPON_CZ75:
+	case WEAPON_REVOLVER:
+		return true;
+	default:
+		return false;
+	}
+}
+
 bool CMisc::WeaponIsPistol(int id) {
 	switch (id) {
 	case WEAPON_DEAGLE:
@@ -596,7 +621,8 @@ bool CMisc::WeaponIsPistol(int id) {
 	case WEAPON_P2000:
 	case WEAPON_P250:
 	case WEAPON_USPS:
-	//case Weapon_Revolver:
+	//case WEAPON_REVOLVER: //removed because autopistol
+	//case WEAPON_CZ75: //removed because autopistol
 		return true;
 	default:
 		return false;
@@ -652,7 +678,7 @@ bool CMisc::WeaponIsKnife(int id) {
 }
 
 void CMisc::Console(const char* command) {
-	static int count = 0;
+	//static int count = 0;
 	ClientCmd_Unrestricted_t args;
 
 	strcpy(args.command, command);
@@ -663,8 +689,8 @@ void CMisc::Console(const char* command) {
 	WriteProcessMemory(Memory::hProc, vArgs, (LPCVOID)&args, sizeof(args), NULL);
 	HANDLE hThread = CreateRemoteThread(Memory::hProc, NULL, NULL, (LPTHREAD_START_ROUTINE)addr, vArgs, NULL, NULL);
 	WaitForSingleObject(hThread, INFINITE);
-	VirtualFreeEx(Memory::hProc, vArgs, sizeof(args), MEM_RELEASE);
+	VirtualFreeEx(Memory::hProc, vArgs, sizeof(args), MEM_RELEASE); //check later if this causes crashes
 	CloseHandle(hThread);
-	count++;
+	//count++;
 	//std::cout << "ClientCmd amount: " << count << std::endl;
 }

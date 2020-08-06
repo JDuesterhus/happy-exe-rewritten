@@ -10,10 +10,10 @@ void CVisuals::Glow() {
 		DWORD pEntity = GlowManager + i * sizeof(csGlowEnt);
 		sGlowEnt = Memory::Read<csGlowEnt>(GlowManager + i * sizeof(csGlowEnt));
 
-		//ignore if dwBase is invalid
+		//skip if dwBase is invalid
 		if (sGlowEnt.dwBase == 0)
 			continue;
-		//ignore if dwBase is local player
+		//skip if dwBase is local player
 		if (sGlowEnt.dwBase == Offsets.LocalBase)
 			continue;
 
@@ -204,6 +204,215 @@ void CVisuals::Glow() {
 					}
 				}
 
+
+				//RUN BOOST BOT WIP | IGNORE THIS BIG CHUNK OF MESS
+				//if (classID == CCSPlayer && entityTeam != localTeam) {
+				//	Vector MyOriginPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
+				//
+				//	Vector EntOriginPos = Memory::Read<Vector>(sGlowEnt.dwBase + Offsets.m_vecOrigin);
+				//	Vector MyAngle;
+				//
+				//
+				//	Vector velocity = Memory::Read<Vector>(sGlowEnt.dwBase + Offsets.m_vecVelocity);
+				//	float speed = FASTSQRT(velocity.x * velocity.x + velocity.y * velocity.y);
+				//
+				//	//Memory::Write<int>(Offsets.LocalBase + Offsets.m_iObserverMode, 1);
+				//
+				//	//std::cout << "MyOriginPos.x " << MyOriginPos.x << std::endl;
+				//	//std::cout << "MyOriginPos.y " << MyOriginPos.y << std::endl;
+				//	//std::cout << "MyOriginPos.z " << MyOriginPos.z << std::endl;
+				//	//
+				//	//std::cout << "EntOriginPos.x " << EntOriginPos.x << std::endl;
+				//	//std::cout << "EntOriginPos.y " << EntOriginPos.y << std::endl;
+				//	//std::cout << "EntOriginPos.z " << EntOriginPos.z << std::endl;
+				//
+				//
+				//	std::cout << "sum ent: " << FASTSQRT(EntOriginPos.x * EntOriginPos.x + EntOriginPos.y * EntOriginPos.y) << std::endl;
+				//	std::cout << "sum my : " << FASTSQRT(MyOriginPos.x * MyOriginPos.x + MyOriginPos.y * MyOriginPos.y) << std::endl;
+				//
+				//	if (GetAsyncKeyState(VK_MENU) & Pressed) {
+				//		float X = MyOriginPos.x - EntOriginPos.x;
+				//		if (X <= 32 && X >= -32) {
+				//			float Y = MyOriginPos.y - EntOriginPos.y;
+				//			if (Y <= 32 && Y >= -32) {
+				//				float Z = MyOriginPos.z - EntOriginPos.z;
+				//				if (Z <= 125 && Z >= 50) {
+				//					Vector EntEyeAngle = Memory::Read<Vector>(sGlowEnt.dwBase + Offsets.m_angEyeAnglesX);
+				//					//std::cout << "EntEyeAngle.x " << EntEyeAngle.x << std::endl;
+				//					//std::cout << "EntEyeAngle.y " << EntEyeAngle.y << std::endl;
+				//
+				//
+				//
+				//					Vector Angle = EntEyeAngle;
+				//					MyAngle = Aimbot.MyViewAngle();
+				//					Angle.x = MyAngle.x;
+				//
+				//					Angle = Aimbot.NormalizeAngle(Angle);
+				//					Angle = Aimbot.ClampAngle(Angle);
+				//					Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, Angle);
+				//					//0x57 = W
+				//					//0x41 = A
+				//					//0x53 = S
+				//					//0x44 = D
+				//
+				//					static bool North = true;
+				//					static bool West = true;
+				//
+				//					//FACING NORTH
+				//					if (MyAngle.y < 90 && MyAngle.y > -90) {
+				//						North = true;
+				//					}
+				//					//FACING EAST
+				//					if (MyAngle.y < 0 && MyAngle.y > -180) {
+				//						West = false;
+				//					}
+				//					//FACING SOUTH
+				//					if (MyAngle.y > 90 && MyAngle.y < 180 || MyAngle.y < -90 && MyAngle.y > -180) {
+				//						North = false;
+				//					}
+				//					//FACING WEST
+				//					if (MyAngle.y > 0 && MyAngle.y < 180) {
+				//						West = true;
+				//					}
+				//
+				//					//std::cout << "NORTH: " << North << std::endl;
+				//					//std::cout << "WEST: " << West << std::endl << std::endl;
+				//
+				//					float EntSum = FASTSQRT(EntOriginPos.x * EntOriginPos.x + EntOriginPos.y * EntOriginPos.y);
+				//					float MySum = FASTSQRT(MyOriginPos.x * MyOriginPos.x + MyOriginPos.y * MyOriginPos.y);
+				//
+				//					if (North) {
+				//						if (EntSum < MySum) {
+				//							keybd_event(0x57, MapVirtualKey(0x57, 0), 0, 0);
+				//							Sleep(16);
+				//							keybd_event(0x57, MapVirtualKey(0x57, 0), KEYEVENTF_KEYUP, 0);
+				//							std::cout << "W" << std::endl;
+				//						}
+				//						if (EntSum > MySum) {
+				//							keybd_event(0x53, MapVirtualKey(0x53, 0), 0, 0);
+				//							Sleep(16);
+				//							keybd_event(0x53, MapVirtualKey(0x53, 0), KEYEVENTF_KEYUP, 0);
+				//							std::cout << "S" << std::endl;
+				//						}
+				//					}
+				//					if (!North) {
+				//						if (EntSum > MySum) {
+				//							keybd_event(0x57, MapVirtualKey(0x57, 0), 0, 0);
+				//							Sleep(16);
+				//							keybd_event(0x57, MapVirtualKey(0x57, 0), KEYEVENTF_KEYUP, 0);
+				//							std::cout << "W" << std::endl;
+				//						}
+				//						if (EntSum < MySum) {
+				//							keybd_event(0x53, MapVirtualKey(0x53, 0), 0, 0);
+				//							Sleep(16);
+				//							keybd_event(0x53, MapVirtualKey(0x53, 0), KEYEVENTF_KEYUP, 0);
+				//							std::cout << "S" << std::endl;
+				//						}
+				//					}
+				//					if (West) {
+				//
+				//					}
+				//					if (!West) {
+				//
+				//					}
+				//
+				//
+				//					//std::cout << "key:" << std::endl;
+				//					//if (North) {
+				//					//	if (EntOriginPos.y > MyOriginPos.y) {
+				//					//		
+				//					//	}
+				//					//	if (EntOriginPos.y < MyOriginPos.y) {
+				//					//		keybd_event(0x53, MapVirtualKey(0x53, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x53, MapVirtualKey(0x53, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "S" << std::endl;
+				//					//	}
+				//					//}
+				//					//if (!North) {
+				//					//	if (EntOriginPos.y > MyOriginPos.y) {
+				//					//		keybd_event(0x57, MapVirtualKey(0x57, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x57, MapVirtualKey(0x57, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "W" << std::endl;
+				//					//	}
+				//					//	if (EntOriginPos.y < MyOriginPos.y) {
+				//					//		keybd_event(0x53, MapVirtualKey(0x53, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x53, MapVirtualKey(0x53, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "S" << std::endl;
+				//					//	}
+				//					//}
+				//					//if (West) {
+				//					//	if (EntOriginPos.x > MyOriginPos.x) {
+				//					//		keybd_event(0x44, MapVirtualKey(0x44, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x44, MapVirtualKey(0x44, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "D" << std::endl;
+				//					//	}
+				//					//	if (EntOriginPos.x < MyOriginPos.x) {
+				//					//		keybd_event(0x41, MapVirtualKey(0x41, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x41, MapVirtualKey(0x41, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "A" << std::endl;
+				//					//	}
+				//					//}
+				//					//if (!West) {
+				//					//	if (EntOriginPos.x > MyOriginPos.x) {
+				//					//		keybd_event(0x44, MapVirtualKey(0x44, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x44, MapVirtualKey(0x44, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "D" << std::endl;
+				//					//	}
+				//					//	if (EntOriginPos.x < MyOriginPos.x) {
+				//					//		keybd_event(0x41, MapVirtualKey(0x41, 0), 0, 0);
+				//					//		Sleep(16);
+				//					//		keybd_event(0x41, MapVirtualKey(0x41, 0), KEYEVENTF_KEYUP, 0);
+				//					//		std::cout << "A" << std::endl;
+				//					//	}
+				//					//}
+				//					//
+				//
+				//				}
+				//			}
+				//		}
+				//	}
+				//
+				//	//Vector MyOriginPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
+				//	//Vector MyEyePos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecViewOffset);
+				//	//MyEyePos = MyOriginPos + MyEyePos;
+				//	////Vector Pos = MyOriginPos;
+				//	////
+				//	////Pos.z += Memory::Read<float>(Offsets.LocalBase + 0x10c);
+				//	//
+				//	//Vector EntOriginPos = Memory::Read<Vector>(sGlowEnt.dwBase + Offsets.m_vecOrigin);
+				//	//Vector EntEyePos = Memory::Read<Vector>(sGlowEnt.dwBase + Offsets.m_vecViewOffset);
+				//	//EntEyePos = EntOriginPos + EntEyePos;
+				//	//DWORD MyBoneMatrix = Memory::Read<DWORD>(Offsets.LocalBase + Offsets.m_dwBoneMatrix);
+				//	//Vector MyBonePos;
+				//	//MyBonePos.x = Memory::Read<float>(MyBoneMatrix + 0x30 * 8 + 0x0C);
+				//	//MyBonePos.y = Memory::Read<float>(MyBoneMatrix + 0x30 * 8 + 0x1C);
+				//	//MyBonePos.z = Memory::Read<float>(MyBoneMatrix + 0x30 * 8 + 0x2C);
+				//	//
+				//	//
+				//	//DWORD EntityBoneMatrix = Memory::Read<DWORD>(sGlowEnt.dwBase + Offsets.m_dwBoneMatrix);
+				//	//Vector EntBonePos;
+				//	//EntBonePos.x = Memory::Read<float>(EntityBoneMatrix + 0x30 * 8 + 0x0C);
+				//	//EntBonePos.y = Memory::Read<float>(EntityBoneMatrix + 0x30 * 8 + 0x1C);
+				//	//EntBonePos.z = Memory::Read<float>(EntityBoneMatrix + 0x30 * 8 + 0x2C);
+				//	//
+				//	////bool vis = pBSP->IsVisible(MyBonePos, EntBonePos);
+				//	//const auto is_visible = pBSP->IsVisible(MyEyePos, EntBonePos);
+				//	//if (is_visible) {
+				//	//	std::cout << "player visible" << std::endl;
+				//	//}
+				//	//else {
+				//	//	std::cout << "player not visible" << std::endl;
+				//	//}
+				//}
+				////end
+
+
 				//std::cout << "glowing player..." << std::endl;
 				if (entityTeam == localTeam && Settings.ESP.Glow_Ally || entityTeam != localTeam && Settings.ESP.Glow_Enemy)
 					GlowEntity(pEntity, R, G, B, Settings.ESP.Glow_Alpha, Settings.ESP.Glow_Style);
@@ -355,6 +564,9 @@ void CVisuals::Chams() {
 			//COMPETETIVE TEAM COLOR
 			if (Settings.ESP.Chams_Custom_Color >= 6 && Settings.ESP.Chams_Custom_Color <= 8) {
 				if (entityTeam != localTeam && Settings.ESP.Chams_Custom_Color == 6 || entityTeam == localTeam && Settings.ESP.Chams_Custom_Color == 7 || Settings.ESP.Chams_Custom_Color == 8) {
+					// ->>> I STILL NEED TO FIND A WAY TO SORT CSPlayerResource IDS TO THEIR DT_CSPlayer ID COUNTERPART <<<-
+					// ->>> I STILL NEED TO FIND A WAY TO SORT CSPlayerResource IDS TO THEIR DT_CSPlayer ID COUNTERPART <<<-
+					// ->>> I STILL NEED TO FIND A WAY TO SORT CSPlayerResource IDS TO THEIR DT_CSPlayer ID COUNTERPART <<<-
 					//DWORD PlayerResource = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwPlayerResource);
 					//int entityColor = Memory::Read<int>(sGlowEnt.dwBase + 0x2D74);
 					//std::cout << "entityColor: " << entityColor << std::endl;
@@ -445,9 +657,6 @@ void CVisuals::Chams() {
 			}
 
 
-
-
-
 			/* ALLY CHAMS */
 			if (entityTeam == localTeam && Settings.ESP.Chams_Ally) {
 				DyeEntity(EntityList, R, G, B);
@@ -489,8 +698,7 @@ void CVisuals::Chams() {
 }
 
 void CVisuals::Others() {
-	int ObjectCount = Memory::Read<int>(Offsets.dwClient + Offsets.dwEntityList + 0x20018) + 128; //0x4 all ent, 0xC current ent, 0x20018 ??
-	//std::cout << "ObjectCount " << ObjectCount << std::endl;
+	int ObjectCount = Memory::Read<int>(Offsets.dwClient + Offsets.dwEntityList + 0x4); // + 0x4) -> all ent; + 0xC) -> ???; + 0x20018) + 128 -> exact ent count
 	for (int i = 0; i <= ObjectCount; i++) {
 		DWORD EntityList = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwEntityList + i * 0x10);
 		//if (EntityList == 0)
@@ -499,6 +707,7 @@ void CVisuals::Others() {
 		int classID = GetClassID(EntityList);
 		if (classID != CCSPlayer && classID != CCSRagdoll && classID != CRagdollProp && classID != CRagdollPropAttached && classID != CSmokeGrenadeProjectile && classID != CFogController && classID != CPlantedC4)
 			continue;
+
 
 		//if (classID == CCSPlayer) {
 		//	static int TotalDMG; 
@@ -583,7 +792,7 @@ void CVisuals::Others() {
 		//		}
 		//	}
 		//}
-
+		//FOV CHANGER
 		if (Settings.Misc.Overwrite_FOV) {
 			if (EntityList == Offsets.LocalBase) {
 				//bool LocalInZoom = Memory::Read<bool>(Offsets.LocalBase + Offsets.m_bIsScoped);
@@ -600,19 +809,18 @@ void CVisuals::Others() {
 				//}
 			}
 		}
-		//NO HAND
+		//NO HANDS
 		if (Settings.Misc.Remove_Hands) {
 			if (EntityList == Offsets.LocalBase) {
 				DWORD GameRules = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwGameRulesProxy);
 				int GameType = Memory::Read<int>(GameRules + Offsets.m_SurvivalGameRuleDecisionTypes);
 				if (GameType != 4) {
 					Memory::Write<bool>(EntityList + 0x258, false); //m_nModelIndex
-					char nohands[256] = { 0 };
-					Memory::Write<char[256]>(EntityList + 3973, nohands);
+					//char nohands[256] = { 0 };
+					//Memory::Write<char[256]>(EntityList + 3973, nohands);
 				}
 			}
 		}
-		
 		//NO RAGDOLLS
 		if (Settings.Misc.Remove_Ragdoll) {
 			if (classID == CCSRagdoll || classID == CRagdollProp || classID == CRagdollPropAttached) {
@@ -644,7 +852,7 @@ void CVisuals::Others() {
 			if (EntityList == Offsets.LocalBase) {
 				DWORD tmcIndex = Memory::Read<DWORD>(Offsets.LocalBase + Offsets.m_hTonemapController);
 				tmcIndex &= 0xFFF;
-				DWORD tmcHandle = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwEntityList + (tmcIndex - 1) * 0x10);;
+				DWORD tmcHandle = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwEntityList + (tmcIndex - 1) * 0x10);
 
 				float ValueMin, ValueMax;
 				static float ValueCustomMin, ValueCustomMax;
@@ -796,6 +1004,7 @@ void CVisuals::BombTimer() {
 			TimerEnd = false;
 		}
 		if (Timer != TimerBefore) {
+
 			if (Timer > 0 && Timer <= TimerStart) {
 				char bombalert[200];
 				sprintf(bombalert, "cmd2 [Cheeto] Bomb Timer: %.1f", Timer); //cool formatting
@@ -963,3 +1172,19 @@ bool CVisuals::EntityIsOther(int id) {
 		return false;
 	}
 }
+
+//const char* CVisuals::GetMapDir() {
+//	static std::array<char, 0x120> dir = Memory::Read<std::array<char, 0x120>>(Offsets.EngineBase + Offsets.dwClientState_MapDirectory);
+//	return dir.data();
+//}
+//
+//const char* CVisuals::GetMapName() {
+//	static std::array<char, 0x80> name = Memory::Read<std::array<char, 0x80>>(Offsets.EngineBase + Offsets.dwClientState_Map);
+//	return name.data();
+//}
+//
+//std::string CVisuals::GetGameDir() {
+//	static std::array<char, 0x120> dir = Memory::Read<std::array<char, 0x120>>(Offsets.dwEngine + Offsets.dwGameDir);
+//	return std::string(dir.data()).append("\\");
+//}
+

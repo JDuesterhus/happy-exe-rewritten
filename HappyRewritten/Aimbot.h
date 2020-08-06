@@ -7,14 +7,34 @@
 #include "Settings.h"
 #include "vector.h"
 #include <algorithm>
+#include <random>
 
 class CAimbot
 {
 public:
-	void Run();
+	void Normal();
+	//void AntiAim();
+	//void RCS();
+	//void Silent();
+
 	void TwoHP();
 	void OneEighty();
 	void ThreeSixty();
+
+	float VecDist(Vector& fVec1, Vector& fVec2); //CHECK IF THIS IS USEFUL FOR RUNBOOST BOT LATER
+	float VecDist2D(Vector& fVec1, Vector& fVec2);
+
+	Vector CalcAngle(Vector src, Vector dst, float recoilx, float recoily);
+	Vector ClampAngle(Vector angle);
+	Vector NormalizeAngle(Vector angle);
+
+
+	Vector MyViewAngle();
+	Vector MyOrigin();
+	Vector MyEyeAngle();
+	Vector MyEyePosition();
+	Vector MyAimPunch();
+
 private:
 	int bone;
 	void DropTarget();
@@ -26,13 +46,9 @@ private:
 
 	int FindBestTarget();
 	float AngleDiff(Vector angle, Vector src, Vector dst);
-	float VecDist(Vector& fVec1, Vector& fVec2);
 
 	float Dot(const Vector &v1, Vector &v2);
 	float GetFov(Vector angle, Vector src, Vector dst);
-	Vector CalcAngle(Vector src, Vector dst, float recoilx, float recoily);
-	Vector ClampAngle(Vector angle);
-	Vector NormalizeAngle(Vector angle);
 	Vector SmoothAngle(Vector src, Vector dst, float smoothx, float smoothy);
 	void MakeVector(Vector angle, Vector& vector);
 
@@ -47,11 +63,23 @@ private:
 	Vector EntOriginPos(DWORD base);
 	Vector EntEyePos(DWORD base);
 
-	Vector MyViewAngle();
-	Vector MyOrigin();
-	Vector MyEyeAngle();
-	Vector MyEyePosition();
-	Vector MyAimPunch();
+	bool CanShoot();
+
+	struct CGlobalVarsBase {
+		float realtime;
+		int framecount;
+		float absolute_frametime;
+		float absolute_framestarttimestddev;
+		float curtime;
+		float frameTime;
+		int maxClients;
+		int tickcount;
+		float interval_per_tick;
+		float interpolation_amount;
+		int simThicksThisFrame;
+		int network_protocol;
+	}; CGlobalVarsBase globalVars;
+
 };
 
 extern CAimbot Aimbot;
