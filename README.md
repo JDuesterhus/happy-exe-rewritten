@@ -1,4 +1,4 @@
-# happy-exe-re | CS:GO Cheat
+# happy-exe-re | CS Cheat
 
 
 
