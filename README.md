@@ -372,15 +372,15 @@ WEAPON_REVOLVER.ini
 ## FAQ
 #### Q: Who made this?
 
-#### A: Most code was written by me with the exception of a some functions in Aimbot.cpp (AngleDiff, Dot, GetFov, CalcAngle, ClampAngle, NormalizeAngle, SmoothAngle, MakeVector) and a few minor things in vector.h.
+#### A: Most code was written by me with the exception of some functions in Aimbot.cpp (AngleDiff, Dot, GetFov, CalcAngle, ClampAngle, NormalizeAngle, SmoothAngle, MakeVector) and a few minor things in vector.h.
 
 #### Q: Why did you make this?
 
-#### A: I made a cheat in 2015 that mostly consisted of copy pasted code and that had terrible performance. I wanted to make something new so I started this project in late 2019 from scratch and fix all the issues I previously had and make use of object oriented programming to clean up the code. The code is still messy and I could have made better use of object oriented classes (for example with reading/writing entities) but the readability still a lot better than "my" old project that had everything slammed into one file.
+#### A: I made a cheat in 2015 that mostly consisted of copy pasted code and with terrible performance. I wanted to make something new so I started this project in late 2019 from scratch and tried to fix all the issues I previously had and make use of object oriented programming to clean up the code. The code is still messy and I could have made better use of object oriented classes (for example with reading/writing entities) but the readability still a lot better than "my" old project that had everything slammed into one file.
 
 #### Q: How to build?
 
-#### A: You can't because I left out some bigger files that stayed mostly untouched by me (IniReader, Memory Class, Json Parser). This was intentional because I didn't want to include complete code that I didn't write and also to prevent people from spreading compiled versions of it on the forums.
+#### A: You can't because I left out some bigger files that stayed mostly untouched by me (IniReader, Memory Class, Json Parser). This was intentional because I didn't want to include already completed code that I didn't write myself and also to prevent people from spreading compiled versions of it on the forums.
 
 #### Q: How is this useful then?
 
