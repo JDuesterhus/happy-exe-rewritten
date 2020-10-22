@@ -368,6 +368,14 @@ WEAPON_USPS.ini
 WEAPON_CZ75.ini
 WEAPON_REVOLVER.ini
 ```
+
+## Planned Features
+
+#### soon
+
+## Known Issues
+  
+#### soon
   
 ## FAQ
 #### Q: Who made this?
