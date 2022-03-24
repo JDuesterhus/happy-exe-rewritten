@@ -6,6 +6,7 @@
 #include <fstream>
 #include <streambuf>
 #include "IniReader.h"
+#include "XorStr.h"
 //#include "json11.hpp"
 
 class CSettings
@@ -103,7 +104,7 @@ public:
 		bool Spammer = false;
 		bool Spammer_Random = false;
 		int Spammer_Delay = 0;
-		std::string Spammer_Path = u8".\\config\\ezfrags.txt";
+		std::string Spammer_Path = XorStr(u8".\\config\\ezfrags.txt");
 		bool Remove_Hands = false;
 		bool Remove_Ragdoll = false;
 		bool Remove_Fog = false;
@@ -120,7 +121,7 @@ public:
 		bool Bomb_Timer = false;
 		bool Swap_Knife_Hand = false;
 		int Weapon_Config = 0;
-		std::string Offset_URL = u8"https://raw.githubusercontent.com/Akandesh/blazedumper/master/csgo.json";
+		std::string Offset_URL = XorStr(u8"https://raw.githubusercontent.com/Akandesh/blazedumper/master/csgo.json");
 		int Window_Transparency = 255;
 	} Misc;
 

@@ -5,6 +5,7 @@
 #include "define.h"
 #include "vector.h"
 #include "Settings.h"
+#include "XorStr.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,6 +27,7 @@ public:
 	void WeaponConfig();
 	bool CanJump(int flag, bool crouch);
 	int GetFlags(DWORD base);
+	bool IsZooming(DWORD base);
 	bool IsAttacking();
 	bool IsAttacking2();
 	DWORD GetWeaponEntity(DWORD base);

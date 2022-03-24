@@ -6,6 +6,7 @@
 #include "define.h"
 #include "Settings.h"
 #include "Aimbot.h"
+#include "XorStr.h"
 //#include "vector.h"
 
 #include <cstdlib>
@@ -24,6 +25,7 @@ public:
 private:
 
 	struct csGlowEnt {
+		int m_nNextFreeSlot;				//4 bytes
 		DWORD dwBase;						//4 bytes
 		float r;							//4 bytes
 		float g;							//4 bytes
@@ -40,7 +42,6 @@ private:
 		int m_nFullBloomStencilTestValue;	//4 bytes
 		int m_nGlowStyle;					//4 bytes
 		int m_nSplitScreenSlot;				//4 bytes
-		int m_nNextFreeSlot;				//4 bytes
 	}; csGlowEnt sGlowEnt;					//sizeof(csGlowEnt) -> 56 bytes | 0x38
 
 	struct CGlobalVarsBase {

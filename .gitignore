@@ -33,7 +33,6 @@
 
 Release/
 HappyRewritten/Release/
-HappyRewritten/CSGO LSV.APS
 HappyRewritten/Release/
 HappyRewritten/IniReader.cpp
 HappyRewritten/IniReader.h
@@ -44,7 +43,9 @@ HappyRewritten/Memory.cpp
 HappyRewritten/Memory.h
 HappyRewritten/json11.cpp
 HappyRewritten/json11.h
+HappyRewritten/json11.hpp
 HappyRewritten/offsets.ini
+HappyRewritten/XorStr.h
 .vs/
 HappyRewritten/HappyRewritten.vcxproj
 HappyRewritten/HappyRewritten.vcxproj.filters

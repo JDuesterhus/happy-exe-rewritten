@@ -8,6 +8,7 @@
 #include <wininet.h>
 #include "Settings.h"
 #include "json11.hpp"
+#include "XorStr.h"
 
 class COffsets
 {
@@ -164,11 +165,11 @@ public:
 	//= 0x2FAA
 
 	//DWORD m_iPlayerC4 = 0x165C;
-	DWORD m_PlayerFog = 0x37B0;
-	DWORD m_hPostProcessCtrl = 0x37A4;
+	DWORD m_PlayerFog = 0x37C4;
+	DWORD m_hPostProcessCtrl = 0x37A8;
 
 	//DT_CSPlayer
-	DWORD m_hTonemapController = 0x31CC; 
+	DWORD m_hTonemapController = 0x31DC;
 
 	//DT_EnvTonemapController
 	DWORD m_bUseCustomAutoExposureMin = 0x9D8; //(byte)
@@ -186,7 +187,7 @@ public:
 	DWORD m_flTonemapRate = 0xA00; //(float)
 
 
-	DWORD m_flModelScale = 0x2748; //m_flModelScale
+	DWORD m_flModelScale = 0x274C; //m_flModelScale
 
 	DWORD ForceAttack2;
 	DWORD ForceAttack2Array;

@@ -19,6 +19,7 @@
 #include "Settings.h"
 #include "vector.h"
 #include "IniReader.h"
+#include "XorStr.h"
 #include "resource.h"
 
 #pragma comment( lib, "winmm" )
@@ -72,7 +73,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 
 void PatternScan() {
 	//if im done being lazy i'll add more important offset scans here
-	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, "xxxx?????xx????xxx????x????xxxxxxxxx", 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
+	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, XorStr( "xxxx?????xx????xxx????x????xxxxxxxxx"), 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
 	//Offsets.PostProcessArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xx?????xxxxx????", 16, 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x53, 0x56, 0x57, 0x0F, 0x85, 0x00, 0x00, 0x00, 0x00) + 2;
@@ -143,130 +144,130 @@ void SetWindow() {
 
 struct new_bool :numpunct<char> {
 	string_type do_truename() const {
-		return "ON ";
+		return XorStr("ON ");
 	}
 	string_type do_falsename() const { 
-		return "OFF";
+		return XorStr("OFF");
 	}
 };
 
 void menu() {
-	system("cls");
-	cout << "   ______________________________" << endl;
+	system(XorStr("cls"));
+	cout << XorStr("   ______________________________") << endl;
 	cout << endl;
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Glow ESP: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Glow ESP: ");
 	cout << setw(5) << setfill(' ') << Settings.ESP.Glow;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Chams: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Chams: ");
 	cout << setw(5) << setfill(' ') << Settings.ESP.Chams;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Aimbot: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Aimbot: ");
 	cout << setw(5) << setfill(' ') << Settings.Aimbot.Aimbot;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Triggerbot: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Triggerbot: ");
 	cout << setw(5) << setfill(' ') << Settings.Triggerbot.Triggerbot;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "AutoPistol: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("AutoPistol: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Autopistol;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Radar: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Radar: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Radar;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "BunnyHop: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("BunnyHop: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Bunnyhop;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Autostrafe: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Autostrafe: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Autostrafe;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Spammer: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Spammer: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Spammer;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Remove Hands: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Remove Hands: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Remove_Hands;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Remove Ragdoll: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Remove Ragdoll: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Remove_Ragdoll;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Remove Fog: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Remove Fog: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Remove_Fog;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Remove Smoke: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Remove Smoke: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Remove_Smoke;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Reduce Flash: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Reduce Flash: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Reduce_Flash;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Overwrite FOV: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Overwrite FOV: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Overwrite_FOV;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Nightmode: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Nightmode: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Nightmode;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Fakelag: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Fakelag: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Fakelag;
-	cout << setw(8) << setfill(' ') << "|" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
 
-	cout << " |";
-	cout << right << setw(20) << setfill(' ') << "Bomb Timer: ";
+	cout << XorStr(" |");
+	cout << right << setw(20) << setfill(' ') << XorStr("Bomb Timer: ");
 	cout << setw(5) << setfill(' ') << Settings.Misc.Bomb_Timer;
-	cout << setw(8) << setfill(' ') << "|" << endl;
-	cout << "   ______________________________" << endl;
+	cout << setw(8) << setfill(' ') << XorStr("|") << endl;
+	cout << XorStr("   ______________________________") << endl;
 }
 
 int main(int argc, char *argv[]) {
 	//TITLE WITH BUILD DATE/TIME
-	SetConsoleTitle("Happy.exe | " __DATE__ " - " __TIME__ " BUILD");
+	SetConsoleTitle(XorStr("Happy.exe | " __DATE__ " - " __TIME__ " BUILD"));
 	//FINDING PROCESS AND MODULES
-	cout << "------------------------------------" << endl;
+	cout << XorStr("------------------------------------") << endl;
 	SetConsoleColor(LIGHT_AQUA, BLACK);
 	//LOADING MAIN CONFIG
-	Settings.LoadConfig(".\\config\\default.ini");
+	Settings.LoadConfig(XorStr(".\\config\\default.ini"));
 	SetWindow();
 	Sleep(500);
-	cout << "WAITING FOR GAME";
+	cout << XorStr("WAITING FOR GAME");
 	while (!Memory::hProc) {
-		Memory::Process("csgo.exe");
+		Memory::Process(XorStr("csgo.exe"));
 		cout << ".";
 		Sleep(500);
 	}
-	cout << endl << "WAITING FOR MODULES";
+	cout << endl << XorStr("WAITING FOR MODULES");
 	while (!Offsets.dwEngineSize && !Offsets.dwClientSize) {
 		cout << ".";
-		Offsets.dwClient = Memory::Module("client.dll", Offsets.dwClientSize);
-		Offsets.dwEngine = Memory::Module("engine.dll", Offsets.dwEngineSize);
+		Offsets.dwClient = Memory::Module(XorStr("client.dll"), Offsets.dwClientSize);
+		Offsets.dwEngine = Memory::Module(XorStr("engine.dll"), Offsets.dwEngineSize);
 		Sleep(500);
 	}
 	//cout << "client_panorama raw: " << Offsets.dwClient << endl;
@@ -275,16 +276,16 @@ int main(int argc, char *argv[]) {
 	//cout << "engine size: " << Offsets.dwEngineSize << endl;
 	//Sleep(5000);
 	//LOADING/DOWNLOADING OFFSETS/NETVARS
-	cout << endl << "LOADING OFFSETS/NETVARS" << endl;
+	cout << endl << XorStr("LOADING OFFSETS/NETVARS") << endl;
 	Offsets.DownloadOffsets();
 	Sleep(500);
 	//SCAN OFFSETS/NETVARS
-	cout << "SCANNING PATTERNS" << endl;
+	cout << XorStr("SCANNING PATTERNS") << endl;
 	PatternScan();
 	Sleep(500);
-	cout << "DONE" << endl;
+	cout << XorStr("DONE") << endl;
 	SetConsoleColor(WHITE, BLACK);
-	cout << "------------------------------------" << endl;
+	cout << XorStr("------------------------------------") << endl;
 	Sleep(500);
 	Offsets.EngineBase = Memory::Read<DWORD>(Offsets.dwEngine + Offsets.dwClientState);
 	//EXECUTE ON EXIT
@@ -376,6 +377,30 @@ void ActivationThread(){
 		isConnected = Memory::Read<int>(Offsets.EngineBase + Offsets.dwClientState_State);
 		Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
 		if (isConnected != 6) Offsets.LocalBase = 0; //temp crash fix
+		//Vector MyOriginPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
+		//
+		//cout << "pos x: " << MyOriginPos.x << endl;
+		//cout << "pos y: " << MyOriginPos.y << endl;
+		//cout << "pos z: " << MyOriginPos.z << endl;
+		//
+		//if (MyOriginPos.y > -85 && MyOriginPos.y < 55) {
+		//	if (MyOriginPos.x < -2355 && MyOriginPos.x > -2500) {
+		//		if (MyOriginPos.z > 11710 && MyOriginPos.z < 11790) {
+		//			cout << "trigger" << endl;
+		//			Sleep(300);
+		//			Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceForward, 4);
+		//			Sleep(600);
+		//			Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceLeft, 5);
+		//			Sleep(300);
+		//			Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceJump, 5);
+		//			Sleep(8000);
+		//		}
+		//	}
+		//
+		//}
+
+
+
 
 		//UPDATE ON TEAMSWITCH
 		int CurrentTeam = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iTeamNum);
@@ -388,7 +413,7 @@ void ActivationThread(){
 		OldTeam = CurrentTeam;
 
 		if (GetAsyncKeyState(Settings.Hotkey.Reload_Config) & Pressed) {
-			Settings.LoadConfig(".\\config\\default.ini");
+			Settings.LoadConfig(XorStr(".\\config\\default.ini"));
 			PlaySound(MAKEINTRESOURCE(IDR_SOUND_ON), GetModuleHandle(NULL), SND_RESOURCE);
 			once = true;
 			Memory::Write<int>(Offsets.EngineBase + Offsets.clientstate_delta_ticks, -1);

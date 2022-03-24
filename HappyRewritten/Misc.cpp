@@ -220,7 +220,7 @@ void CMisc::WeaponConfig() {
 			case WEAPON_REVOLVER:
 			case WEAPON_TEC9:
 			case WEAPON_USPS:
-				cfgpath = ".\\config\\weapon_cfg_groups\\WEAPON_PISTOL.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_groups\\WEAPON_PISTOL.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_AK47:
@@ -232,14 +232,14 @@ void CMisc::WeaponConfig() {
 			case WEAPON_M4A4:
 			case WEAPON_NEGEV:
 			case WEAPON_SG553:
-				cfgpath = ".\\config\\weapon_cfg_groups\\WEAPON_RIFLE.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_groups\\WEAPON_RIFLE.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MAG7:
 			case WEAPON_NOVA:
 			case WEAPON_SAWEDOFF:
 			case WEAPON_XM1014:
-				cfgpath = ".\\config\\weapon_cfg_groups\\Weapon_SHOTGUN.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_groups\\Weapon_SHOTGUN.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_BIZON:
@@ -249,14 +249,14 @@ void CMisc::WeaponConfig() {
 			case WEAPON_MP9:
 			case WEAPON_P90:
 			case WEAPON_UMP45:
-				cfgpath = ".\\config\\weapon_cfg_groups\\Weapon_SMG.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_groups\\Weapon_SMG.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_AWP:
 			case CWeaponG3SG1:
 			case WEAPON_SCAR20:
 			case WEAPON_SSG08:
-				cfgpath = ".\\config\\weapon_cfg_groups\\Weapon_SNIPER.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_groups\\Weapon_SNIPER.ini");
 				loadcfg = true;
 				break;
 			default:
@@ -269,139 +269,139 @@ void CMisc::WeaponConfig() {
 		if (Settings.Misc.Weapon_Config == 2) {
 			switch (CurrentWeapon) {
 			case WEAPON_DEAGLE:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_DEAGLE.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_DEAGLE.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_ELITE:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_ELITE.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_ELITE.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_FIVESEVEN:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_FIVESEVEN.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_FIVESEVEN.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_GLOCK:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_GLOCK.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_GLOCK.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_AK47:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_AK47.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_AK47.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_AUG:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_AUG.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_AUG.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_AWP:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_AWP.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_AWP.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_FAMAS:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_FAMAS.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_FAMAS.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_G3SG1:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_G3SG1.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_G3SG1.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_GALIL:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_GALIL.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_GALIL.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_M249:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_M249.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_M249.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_M4A4:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_M4A4.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_M4A4.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MAC10:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_MAC10.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_MAC10.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_P90:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_P90.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_P90.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MP5SD:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_MP5SD.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_MP5SD.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_UMP45:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_UMP45.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_UMP45.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_XM1014:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_XM1014.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_XM1014.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_BIZON:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_BIZON.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_BIZON.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MAG7:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_MAG7.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_MAG7.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_NEGEV:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_NEGEV.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_NEGEV.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_SAWEDOFF:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_SAWEDOFF.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_SAWEDOFF.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_TEC9:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_TEC9.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_TEC9.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_P2000:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_P2000.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_P2000.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MP7:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_MP7.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_MP7.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_MP9:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_MP9.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_MP9.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_NOVA:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_NOVA.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_NOVA.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_P250:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_P250.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_P250.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_SCAR20:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_SCAR20.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_SCAR20.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_SG553:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_SG553.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_SG553.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_SSG08:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_SSG08.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_SSG08.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_M4A1S:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_M4A1S.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_M4A1S.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_USPS:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_USPS.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_USPS.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_CZ75:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_CZ75.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_CZ75.ini");
 				loadcfg = true;
 				break;
 			case WEAPON_REVOLVER:
-				cfgpath = ".\\config\\weapon_cfg_single\\WEAPON_REVOLVER.ini";
+				cfgpath = XorStr(".\\config\\weapon_cfg_single\\WEAPON_REVOLVER.ini");
 				loadcfg = true;
 				break;
 			default:
@@ -464,6 +464,10 @@ int CMisc::GetFlags(DWORD base) {
 	return fflag;
 }
 
+bool CMisc::IsZooming(DWORD base) {
+	bool inReload = Memory::Read<bool>(base + Offsets.m_bIsScoped);
+	return inReload;
+}
 
 DWORD CMisc::GetWeaponEntity(DWORD base) {
 	DWORD weaponIndex = Memory::Read<DWORD>(base + Offsets.m_hActiveWeapon) & 0xFFF;
@@ -501,7 +505,7 @@ bool CMisc::IsAttacking() {
 }
 
 bool CMisc::IsAttacking2() {
-	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack + -96);
+	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack -120);
 	switch (inAttack2) {
 	case 1:
 	case 5:

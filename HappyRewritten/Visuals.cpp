@@ -117,8 +117,10 @@ void CVisuals::Glow() {
 				//COMPETETIVE TEAM COLOR
 				if (Settings.ESP.Glow_Custom_Color >= 6 && Settings.ESP.Glow_Custom_Color <= 8) {
 					if (entityTeam != localTeam && Settings.ESP.Glow_Custom_Color == 6 || entityTeam == localTeam && Settings.ESP.Glow_Custom_Color == 7 || Settings.ESP.Glow_Custom_Color == 8) {
-						//DWORD PlayerResource = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwPlayerResource);
-						//int entityColor = Memory::Read<int>(sGlowEnt.dwBase + 0x2D74);
+						DWORD PlayerResource = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwPlayerResource);
+						//DWORD DT_CSPlayerResource = 0x165C;
+						//DWORD m_iCompTeammateColor = 0x1CD0;
+						//int entityColor = Memory::Read<int>(PlayerResource + m_iCompTeammateColor);
 						//std::cout << "entityColor: " << entityColor << std::endl;
 					}
 				}
@@ -853,7 +855,6 @@ void CVisuals::Others() {
 				DWORD tmcIndex = Memory::Read<DWORD>(Offsets.LocalBase + Offsets.m_hTonemapController);
 				tmcIndex &= 0xFFF;
 				DWORD tmcHandle = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwEntityList + (tmcIndex - 1) * 0x10);
-
 				float ValueMin, ValueMax;
 				static float ValueCustomMin, ValueCustomMax;
 				ValueMin = Memory::Read<float>(tmcHandle + Offsets.m_flCustomAutoExposureMin);
@@ -877,11 +878,11 @@ void CVisuals::Others() {
 		if (Settings.Misc.Swap_Knife_Hand) {
 			static bool flipped = false;
 			if (Misc.WeaponIsKnife(Misc.GetCurrentWeapon(Offsets.LocalBase)) && !flipped) {
-				Misc.Console("toggle cl_righthand");
+				Misc.Console(XorStr("toggle cl_righthand"));
 				flipped = true;
 			}
 			if (!Misc.WeaponIsKnife(Misc.GetCurrentWeapon(Offsets.LocalBase)) && flipped) {
-				Misc.Console("toggle cl_righthand");
+				Misc.Console(XorStr("toggle cl_righthand"));
 				flipped = false;
 			}
 		}
@@ -975,7 +976,7 @@ void CVisuals::BombTimer() {
 		bool BombDefused = Memory::Read<bool>(EntityList + 0x29B0); //m_bBombDefused
 		if (BombDefused) {
 			TimerEnd = true;
-			Misc.Console("cmd2 [Cheeto] Bomb Timer: DEFUSED!;cmd2 [Cheeto] Bomb Timer: DEFUSED!;cmd2 [Cheeto] Bomb Timer: DEFUSED!");
+			Misc.Console(XorStr("cmd2 [Cheeto] Bomb Timer: DEFUSED!;cmd2 [Cheeto] Bomb Timer: DEFUSED!;cmd2 [Cheeto] Bomb Timer: DEFUSED!"));
 			Sleep(20000);
 			continue;
 		}
@@ -999,7 +1000,7 @@ void CVisuals::BombTimer() {
 		//std::cout << "BombTimerStart: " << TimerStart << std::endl;
 
 		if (Timer >= TimerBefore && TimerEnd) {
-			Misc.Console("developer 1; con_filter_text [Cheeto]; con_filter_enable 2; cmd2 [Cheeto] Bomb Timer Started!");
+			Misc.Console(XorStr("developer 1; con_filter_text [Cheeto]; con_filter_enable 2; cmd2 [Cheeto] Bomb Timer Started!"));
 			TimerStart = Timer;
 			TimerEnd = false;
 		}
@@ -1007,13 +1008,13 @@ void CVisuals::BombTimer() {
 
 			if (Timer > 0 && Timer <= TimerStart) {
 				char bombalert[200];
-				sprintf(bombalert, "cmd2 [Cheeto] Bomb Timer: %.1f", Timer); //cool formatting
+				sprintf(bombalert, XorStr("cmd2 [Cheeto] Bomb Timer: %.1f"), Timer); //cool formatting
 				Misc.Console(bombalert);
 			}
 			if (Timer <= 0) {
 				TimerEnd = true;
 				Sleep(200);
-				Misc.Console("cmd2 [Cheeto] Bomb Timer: B00M!;cmd2 [Cheeto] Bomb Timer: B00M!;cmd2 [Cheeto] Bomb Timer: B00M!");
+				Misc.Console(XorStr("cmd2 [Cheeto] Bomb Timer: B00M!;cmd2 [Cheeto] Bomb Timer: B00M!;cmd2 [Cheeto] Bomb Timer: B00M!"));
 				Sleep(20000);
 			}
 		}

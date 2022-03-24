@@ -30,8 +30,7 @@ void CTrigger::Run(){
 				return;
 		}
 		if (Settings.Triggerbot.Triggerbot_Check_Zoom) {
-			bool LocalInZoom = Memory::Read<bool>(Offsets.LocalBase + Offsets.m_bIsScoped);
-			if (Misc.WeaponIsSniper(weaponID) && !LocalInZoom)
+			if (Misc.WeaponIsSniper(weaponID) && !Misc.IsZooming(Offsets.LocalBase))
 				return;
 		}
 		int chID = Memory::Read<int>(Offsets.LocalBase + Offsets.m_iCrosshairId);
@@ -222,54 +221,74 @@ void Trigger() {
 
 
 float CTrigger::DashSpeed() {
-	
+
 	if (Misc.CanJump(Misc.GetFlags(Offsets.LocalBase), true)) {
-		switch (Misc.GetCurrentWeapon(Offsets.LocalBase)) {
-		case WEAPON_AWP:
-			return 33.f;
-		case WEAPON_G3SG1:
-		case WEAPON_SCAR20:
-			return 40.f;
-		case WEAPON_SG553:
-		case WEAPON_AUG:
-			return 50.f;
-		case WEAPON_DEAGLE:
-		case WEAPON_ELITE:
-		case WEAPON_FIVESEVEN:
-		case WEAPON_GLOCK:
-		case WEAPON_P2000:
-		case WEAPON_USPS:
-		case WEAPON_SSG08:
-		case WEAPON_P90:
-		case WEAPON_UMP45:
-		case WEAPON_REVOLVER:
-		case WEAPON_CZ75:
-			return 76.f;
-		case WEAPON_AK47:
-		case WEAPON_GALIL:
-		case WEAPON_SAWEDOFF:
-		case WEAPON_XM1014:
-			return 71.f;
-		case WEAPON_NEGEV:
-		case WEAPON_M249:
-			return 65.f;
-		case WEAPON_FAMAS:
-		case WEAPON_NOVA:
-		case WEAPON_M4A4:
-		case WEAPON_MAG7:
-		case WEAPON_MP7:
-		case WEAPON_MP9:
-			return 74.f;
-		case WEAPON_MP5SD:
-		case WEAPON_BIZON:
-		case WEAPON_MAC10:
-		case WEAPON_P250:
-		case WEAPON_TEC9:
-			return 80.f;
-		default:
-			return 33.f;
+		if (Misc.IsZooming(Offsets.LocalBase)) {
+			switch (Misc.GetCurrentWeapon(Offsets.LocalBase)) {
+			case WEAPON_SSG08:
+				return 78.2f;
+			case WEAPON_SG553:
+			case WEAPON_AUG:
+				return 51.f;
+			case WEAPON_G3SG1:
+			case WEAPON_SCAR20:
+				return 40.8f;
+			case WEAPON_AWP:
+				return 34.0f;
+			default:
+				return 34.0f;
+			}
+		}
+		else {
+			switch (Misc.GetCurrentWeapon(Offsets.LocalBase)) {
+			case WEAPON_GLOCK:
+			case WEAPON_P2000:
+			case WEAPON_USPS:
+			case WEAPON_ELITE:
+			case WEAPON_P250:
+			case WEAPON_FIVESEVEN:
+			case WEAPON_TEC9:
+			case WEAPON_CZ75:
+			case WEAPON_MAC10:
+			case WEAPON_MP9:
+			case WEAPON_BIZON:
+				return 81.6f;
+			case WEAPON_MP5SD:
+				return 79.9f;
+			case WEAPON_DEAGLE:
+			case WEAPON_UMP45:
+			case WEAPON_P90:
+			case WEAPON_SSG08:
+				return 78.2f;
+			case WEAPON_MAG7:
+			case WEAPON_M4A4:
+			case WEAPON_M4A1S:
+				return 76.5f;
+			case WEAPON_REVOLVER:
+			case WEAPON_NOVA:
+			case WEAPON_MP7:
+			case WEAPON_FAMAS:
+				return 74.8f;
+			case WEAPON_G3SG1:
+			case WEAPON_SCAR20:
+			case WEAPON_XM1014:
+			case WEAPON_GALIL:
+			case WEAPON_AK47:
+				return 73.1f;
+			case WEAPON_SAWEDOFF:
+			case WEAPON_AUG:
+			case WEAPON_SG553:
+				return 71.4f;
+			case WEAPON_AWP:
+				return 68.0f;
+			case WEAPON_M249:
+				return 66.3f;
+			case WEAPON_NEGEV:
+				return 51.0f;
+			default:
+				return 51.0f;
+			}
 		}
 	}
-	else
-		return 10.f;
+	else return 34.0f;
 }

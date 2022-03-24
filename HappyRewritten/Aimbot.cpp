@@ -260,18 +260,18 @@ void CAimbot::TwoHP() {
 			Vector AngleUP;
 			AngleUP.x = -89;
 			AngleUP.y = Angle.y;
-			AimAngle = SmoothAngle(Angle, AngleUP, 10, 10);
+			AimAngle = SmoothAngle(Angle, AngleUP, 5, 5);
 			AimAngle = NormalizeAngle(AimAngle);
 			AimAngle = ClampAngle(AimAngle);
 			Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
 			Sleep(1);
-		} while (Angle.x > -88.99);
+		} while (Angle.x > -88.9);
 		//throw nade
-		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -96, 5);
+		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -120, 5);
 		Sleep(200);
 		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack, 5);
 		Sleep(80); //78-82 
-		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -96, 4);
+		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack2 + -120, 4);
 		Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceAttack, 4);
 		Sleep(220);
 		//knife
