@@ -372,24 +372,39 @@ WEAPON_REVOLVER.ini
 ## TODO
 
 Make a local webui using webhooks.
+
 Fully rewrite the aimbot (after understanding the math behind it better).
+
 Make better use of classes.
+
 Be more concistent (and accurate) on variable and function names.
+
 Remove unused code.
+
 Add missing hotkeys.
+
 Add auto-reattach to process after game exit/crash.
+
 Add runboost bot.
+
 Add block bot.
+
 Add print out player info.
+
 Add esp based on team color (m_iCompTeammateColor).
+
 Add skinchanger.
+
 Add defuse indicator.
+
 Add standalone rcs without confliction between aimbot.
 
 ## Known Issues
   
 CMisc::Console crashes after using it too often (potential memory leak).
+
 remove_hands does not work in Dangerzone gamemode (that's the limitations of being external).
+
 overwrite_fov doesn't always work (also because we're external).
   
 ## FAQ
