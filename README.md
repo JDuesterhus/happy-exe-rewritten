@@ -213,7 +213,7 @@ fakelag_ticks=12
 bomb_timer=False
 swap_knife_hand=False
 weapon_config=0
-offset_url= ;put an url with updated offsets/netvars here
+offset_url=https://raw.githubusercontent.com/Akandesh/blazedumper/master/config.json
 window_transparency=204
 
 ;use virtual key codes in decimal
@@ -369,28 +369,58 @@ WEAPON_CZ75.ini
 WEAPON_REVOLVER.ini
 ```
 
-## Planned Features
+## TODO
 
-#### soon
+#### Make a local webui using webhooks.
+
+#### Fully rewrite the aimbot (after understanding the math behind it better).
+
+#### Make better use of classes.
+
+#### Be more concistent (and accurate) on variable and function names.
+
+#### Remove unused code.
+
+#### Add missing hotkeys.
+
+#### Add auto-reattach to process after game exit/crash.
+
+#### Add runboost bot.
+
+#### Add block bot.
+
+#### Add print out player info.
+
+#### add esp based on team color (m_iCompTeammateColor).
+
+#### add skinchanger.
+
+#### add defuse indicator.
+
+#### add standalone rcs without confliction between aimbot.
 
 ## Known Issues
   
-#### soon
+#### CMisc::Console crashes after using it too often (potential memory leak).
+
+#### remove_hands does not work in Dangerzone gamemode (that's the limitations of being external).
+
+#### overwrite_fov doesn't always work (also because we're external).
   
 ## FAQ
 #### Q: Who made this?
 
-#### A: Most code was written by me with the exception of some functions in Aimbot.cpp (AngleDiff, Dot, GetFov, CalcAngle, ClampAngle, NormalizeAngle, SmoothAngle, MakeVector) and a few minor things in vector.h.
+#### A: Most code was written by me with the exception of most functions in Aimbot.cpp (AngleDiff, Dot, GetFov, CalcAngle, ClampAngle, NormalizeAngle, SmoothAngle, MakeVector) and a few minor things.
 
 #### Q: Why did you make this?
 
-#### A: I made a cheat in 2015 that mostly consisted of copy pasted code and with terrible performance. I wanted to make something new so I started this project in late 2019 from scratch and tried to fix all the issues I previously had and make use of object oriented programming to clean up the code. The code is still messy and I could have made better use of object oriented classes (for example with reading/writing entities) but the readability still a lot better than "my" old project that had everything slammed into one file.
+#### A: I made a cheat in 2015 that mostly consisted of copy pasted code and with terrible performance. I wanted to make something new so I started this project in late 2019 from scratch and tried to fix all the issues I previously had and make use of object oriented programming to clean up the code. The code is still messy and I could have made better use of classes (for example with reading/writing entities) but the readability still a lot better than "my" old project that had everything in one file (main.cpp).
 
 #### Q: How to build?
 
-#### A: You can't because I left out some bigger files that stayed mostly untouched by me (IniReader, Memory Class, Json Parser). This was intentional because I didn't want to include already completed code that I didn't write myself and also to prevent people from spreading compiled versions of it on the forums.
+#### A: You can't because I left out some bigger libraries made by different people (IniReader, Memory Class, Json Parser). This was intentional because I didn't want to include untouched/unedited code that I didn't write myself and also to prevent people from spreading compiled versions on various forums.
 
 #### Q: How is this useful then?
 
-#### A: You'll probably find no use in this except if you can learn anything from it but you can probably find better code to learn from since this poorly written.
+#### A: You'll likely find no use in this except if you can learn anything from it but you can probably find better way better resources to learn from since this poorly written.
   
