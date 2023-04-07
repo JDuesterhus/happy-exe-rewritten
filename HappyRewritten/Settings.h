@@ -52,6 +52,7 @@ public:
 	struct {
 		bool Aimbot = true;
 		bool Aimbot_Hotkey = true;
+		int Aimbot_Mode = 0;
 		//bool Aimbot_Silent = false;
 		//int Aimbot_Silent_Strength = 80;
 		int Aimbot_Bone = 8;
@@ -76,7 +77,7 @@ public:
 		float RCS_Yaw = 100;
 		int RCS_AfterShots = 0;
 	} Aimbot;
-	
+
 	struct {
 		bool Triggerbot = true;
 		bool Triggerbot_Hotkey = true;

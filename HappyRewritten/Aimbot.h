@@ -8,6 +8,7 @@
 #include "vector.h"
 #include <algorithm>
 #include <random>
+#include <WinUser.h>
 
 class CAimbot
 {
@@ -47,7 +48,7 @@ private:
 	int FindBestTarget();
 	float AngleDiff(Vector angle, Vector src, Vector dst);
 
-	float Dot(const Vector &v1, Vector &v2);
+	float Dot(const Vector& v1, Vector& v2);
 	float GetFov(Vector angle, Vector src, Vector dst);
 	Vector SmoothAngle(Vector src, Vector dst, float smoothx, float smoothy);
 	void MakeVector(Vector angle, Vector& vector);

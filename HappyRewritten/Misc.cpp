@@ -70,7 +70,7 @@ void CMisc::BunnyHop() {
 			if (Settings.Misc.Fakelag && JumpState == 7)
 				Memory::Write<bool>(Offsets.dwEngine + Offsets.dwbSendPackets, true);
 			Memory::Write<BYTE>(Offsets.dwClient + Offsets.dwForceJump, JumpState);
-	
+
 			Sleep(1);
 		}
 	}
@@ -79,7 +79,7 @@ void CMisc::BunnyHop() {
 
 void CMisc::AutoStrafe() {
 	static bool movementfix = false;
-	if (Misc.GetSpeed2D() >= 35) { 
+	if (Misc.GetSpeed2D() >= 35) {
 		static Vector PrevViewAngle;
 		Vector StrafeAngles = Memory::Read<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles);
 		if (GetFlags(Offsets.LocalBase) == FL_IN_AIR_STAND || GetFlags(Offsets.LocalBase) == FL_IN_AIR_CROUCHED) {
@@ -496,7 +496,7 @@ bool CMisc::IsAttacking() {
 	switch (inAttack) {
 	case 1:
 	case 5:
-	//case 6: //this is MWHEELUP/MWHEELDOWN
+		//case 6: //this is MWHEELUP/MWHEELDOWN
 	case 7:
 		return true;
 	default:
@@ -505,11 +505,11 @@ bool CMisc::IsAttacking() {
 }
 
 bool CMisc::IsAttacking2() {
-	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack -120);
+	int inAttack2 = Memory::Read<BYTE>(Offsets.dwClient + Offsets.dwForceAttack - 120);
 	switch (inAttack2) {
 	case 1:
 	case 5:
-	//case 6: //this is MWHEELUP/MWHEELDOWN
+		//case 6: //this is MWHEELUP/MWHEELDOWN
 	case 7:
 		return true;
 	default:
@@ -541,6 +541,9 @@ float CMisc::GetSpeed1D() {
 	Vector velocity = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecVelocity);
 	float speed = FASTSQRT(velocity.z * velocity.z);
 	return speed;
+}
+
+float CMisc::GetSensitivity() {
 }
 
 bool CMisc::WeaponValid(int id) {
@@ -625,8 +628,8 @@ bool CMisc::WeaponIsPistol(int id) {
 	case WEAPON_P2000:
 	case WEAPON_P250:
 	case WEAPON_USPS:
-	//case WEAPON_REVOLVER: //removed because autopistol
-	//case WEAPON_CZ75: //removed because autopistol
+		//case WEAPON_REVOLVER: //removed because autopistol
+		//case WEAPON_CZ75: //removed because autopistol
 		return true;
 	default:
 		return false;

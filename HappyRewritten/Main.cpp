@@ -73,7 +73,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 
 void PatternScan() {
 	//if im done being lazy i'll add more important offset scans here
-	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, XorStr( "xxxx?????xx????xxx????x????xxxxxxxxx"), 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
+	Offsets.ClientCMDArray = Mem.FindPatternArr(Offsets.dwEngine, Offsets.dwEngineSize, XorStr("xxxx?????xx????xxx????x????xxxxxxxxx"), 36, 0x55, 0x8B, 0xEC, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x75, 0x0C, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x00, 0xEB, 0x05, 0x8B, 0x01, 0xFF, 0x50, 0x34, 0x50, 0xA1);
 	Offsets.ClientCMD = Offsets.ClientCMDArray - Offsets.dwEngine;
 
 	//Offsets.PostProcessArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xx?????xxxxx????", 16, 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x53, 0x56, 0x57, 0x0F, 0x85, 0x00, 0x00, 0x00, 0x00) + 2;
@@ -89,8 +89,8 @@ void PatternScan() {
 
 	//Offsets.LobbyInfoArray = Mem.FindPatternArr(Offsets.dwClient, Offsets.dwClientSize, "xx?????xx????xxxx", 17, 0xC6, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x85, 0xC9, 0x74, 0x22);
 	//Offsets.LobbyInfo = Memory::Read<DWORD>(Offsets.LobbyInfoArray - Offsets.dwClient - 0x1000 + 0x50);
-	
-	
+
+
 	//cout << "LvlBypassArray " << hex << Offsets.LvlBypassArray << endl;
 	//cout << "LvlBypass " << hex << Offsets.LvlBypass << endl;
 	//cout << dec;
@@ -146,7 +146,7 @@ struct new_bool :numpunct<char> {
 	string_type do_truename() const {
 		return XorStr("ON ");
 	}
-	string_type do_falsename() const { 
+	string_type do_falsename() const {
 		return XorStr("OFF");
 	}
 };
@@ -247,7 +247,7 @@ void menu() {
 	cout << XorStr("   ______________________________") << endl;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
 	//TITLE WITH BUILD DATE/TIME
 	SetConsoleTitle(XorStr("Happy.exe | " __DATE__ " - " __TIME__ " BUILD"));
 	//FINDING PROCESS AND MODULES
@@ -255,7 +255,7 @@ int main(int argc, char *argv[]) {
 	SetConsoleColor(LIGHT_AQUA, BLACK);
 	//LOADING MAIN CONFIG
 	Settings.LoadConfig(XorStr(".\\config\\default.ini"));
-	SetWindow();
+	//SetWindow();
 	Sleep(500);
 	cout << XorStr("WAITING FOR GAME");
 	while (!Memory::hProc) {
@@ -300,23 +300,23 @@ int main(int argc, char *argv[]) {
 	int startsound = (rand() % 18 + 1);
 	//COOL START SOUND EFFECTS
 	if (startsound == 1) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START1), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
-	if (startsound == 2) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START2), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 3) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START3), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 4) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START4), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 5) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START5), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 6) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START6), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 7) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START7), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 8) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START8), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 9) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START9), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 10) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START10), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 11) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START11), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 12) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START12), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 13) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START13), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 14) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START14), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 15) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START15), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 16) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START16), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 17) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START17), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
-	if (startsound == 18) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START18), GetModuleHandle(NULL),  SND_ASYNC | SND_RESOURCE);
+	if (startsound == 2) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START2), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 3) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START3), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 4) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START4), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 5) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START5), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 6) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START6), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 7) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START7), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 8) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START8), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 9) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START9), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 10) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START10), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 11) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START11), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 12) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START12), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 13) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START13), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 14) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START14), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 15) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START15), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 16) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START16), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 17) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START17), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
+	if (startsound == 18) PlaySound(MAKEINTRESOURCE(IDR_SOUND_START18), GetModuleHandle(NULL), SND_ASYNC | SND_RESOURCE);
 	menu();
 	//THREADS
 	thread Activation_thread = thread(ActivationThread);
@@ -370,18 +370,15 @@ void Activation(bool boolean) {
 }
 
 
-void ActivationThread(){
+void ActivationThread() {
 	bool once = Settings.ESP.Glow;
 	static int OldTeam = 0;
 	while (true) {
 		isConnected = Memory::Read<int>(Offsets.EngineBase + Offsets.dwClientState_State);
 		Offsets.LocalBase = Memory::Read<DWORD>(Offsets.dwClient + Offsets.dwLocalPlayer);
 		if (isConnected != 6) Offsets.LocalBase = 0; //temp crash fix
-		//Vector MyOriginPos = Memory::Read<Vector>(Offsets.LocalBase + Offsets.m_vecOrigin);
-		//
-		//cout << "pos x: " << MyOriginPos.x << endl;
-		//cout << "pos y: " << MyOriginPos.y << endl;
-		//cout << "pos z: " << MyOriginPos.z << endl;
+
+
 		//
 		//if (MyOriginPos.y > -85 && MyOriginPos.y < 55) {
 		//	if (MyOriginPos.x < -2355 && MyOriginPos.x > -2500) {
@@ -397,8 +394,6 @@ void ActivationThread(){
 		//		}
 		//	}
 		//
-		//}
-
 
 
 
@@ -481,7 +476,7 @@ void ActivationThread(){
 		}
 		if (GetAsyncKeyState(Settings.Hotkey.Toggle_Reduce_Flash) & Pressed) {
 			Settings.Misc.Reduce_Flash = !Settings.Misc.Reduce_Flash;
-			if (!Settings.Misc.Reduce_Flash) 
+			if (!Settings.Misc.Reduce_Flash)
 				Memory::Write<float>(Offsets.LocalBase + Offsets.m_flFlashMaxAlpha, 255);
 			Activation(Settings.Misc.Reduce_Flash);
 		}
@@ -755,7 +750,7 @@ void AimbotThread() {
 			if (Settings.Aimbot.Aimbot_Hotkey && !GetAsyncKeyState(Settings.Hotkey.Hold_Aimbot) || !Settings.Aimbot.Aimbot)
 				continue;
 			//if (!Settings.Aimbot.Aimbot_Silent)
-				Aimbot.Normal();
+			Aimbot.Normal();
 			//if (Settings.Aimbot.Aimbot_Silent)
 			//	Aimbot.Silent();
 		}

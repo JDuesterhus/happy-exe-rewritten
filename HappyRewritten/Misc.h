@@ -43,7 +43,8 @@ public:
 	bool WeaponIsKnife(int id);
 	float GetSpeed1D();
 	float GetSpeed2D();
-	float GetSpeed3D(); 
+	float GetSpeed3D();
+	float GetSensitivity();
 	void Console(const char* command);
 private:
 	struct CGlobalVarsBase {
@@ -60,12 +61,12 @@ private:
 		int simThicksThisFrame;
 		int network_protocol;
 	}; CGlobalVarsBase globalVars;
-	#pragma pack(push,1)
+#pragma pack(push,1)
 	struct ClientCmd_Unrestricted_t {
 		char command[200];
 		bool delay;
 	};
-	#pragma pack(pop)
+#pragma pack(pop)
 
 
 

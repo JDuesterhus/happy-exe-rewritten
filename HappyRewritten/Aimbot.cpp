@@ -13,6 +13,7 @@ void CAimbot::DropTarget() {
 
 void CAimbot::Normal() {
 	//DropTarget();
+	//add dwMouseEnable check
 	if (Misc.WeaponValid(Misc.GetCurrentWeapon(Offsets.LocalBase))) {
 		if (!Misc.IsReloading(Offsets.LocalBase)) {
 			static int oldTarget = -1;
@@ -20,10 +21,25 @@ void CAimbot::Normal() {
 			if (Target > 0) {
 				Vector AimAngle;
 				AimAngle = CalcAngle(MyEyePosition(), BonePos(EntBoneMatrix(EntBase(Target)), bone), Settings.Aimbot.RCS_Pitch, Settings.Aimbot.RCS_Yaw);
-				AimAngle = SmoothAngle(MyViewAngle(), AimAngle, Settings.Aimbot.Aimbot_Smooth_Pitch, Settings.Aimbot.Aimbot_Smooth_Yaw);
+				AimAngle = SmoothAngle(MyViewAngle(), AimAngle, (Settings.Aimbot.Aimbot_Smooth_Pitch), (Settings.Aimbot.Aimbot_Smooth_Yaw));
 				AimAngle = NormalizeAngle(AimAngle);
 				AimAngle = ClampAngle(AimAngle);
-				Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+				if (Settings.Aimbot.Aimbot_Mode == 0) {
+					Memory::Write<Vector>(Offsets.EngineBase + Offsets.dwClientState_ViewAngles, AimAngle);
+				}
+				if (Settings.Aimbot.Aimbot_Mode == 1) {
+					//credits to https://github.com/BuddyBoi/
+					Vector MyAngle = Aimbot.MyViewAngle();
+					Vector MouseAngle, delta;
+					float MySensitivity = 1; //hardcoded since hazedumper currently gives wrong addresses
+					delta = MyAngle - AimAngle;
+					MouseAngle.x = (delta.x * -1.f) / (0.022f * MySensitivity);
+					MouseAngle.y = (delta.y) / (0.022f * MySensitivity);
+					mouse_event(0x1, (int)MouseAngle.y, (int)MouseAngle.x, 0, 0);
+				}
+				if (Settings.Aimbot.Aimbot_Mode == 2) {
+					//incross aimbot or silent aim
+				}
 				oldTarget = Target;
 			}
 			else {
@@ -415,7 +431,7 @@ int CAimbot::FindBestTarget() {
 
 		if (tmp < iMax) {
 			iMax = tmp;
-			Target = i; 
+			Target = i;
 		}
 	}
 	if (Target == -1) {
@@ -449,7 +465,7 @@ float CAimbot::AngleDiff(Vector angle, Vector src, Vector dst) {
 
 	float u_dot_v = aim.x * ang.x + aim.y * ang.y + aim.z * ang.z;
 
-	angDifference = acosf(u_dot_v / (mag_s*mag_d)) * (180.0 / M_PI);
+	angDifference = acosf(u_dot_v / (mag_s * mag_d)) * (180.0 / M_PI);
 
 	return angDifference;
 }
@@ -552,7 +568,7 @@ Vector CAimbot::BonePos(DWORD boneBase, int boneID) {
 	return bonePos;
 }
 
-float CAimbot::Dot(const Vector &v1, Vector &v2) {
+float CAimbot::Dot(const Vector& v1, Vector& v2) {
 	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
@@ -688,6 +704,6 @@ void CAimbot::MakeVector(Vector angle, Vector& vector) {
 	float yaw = float(angle[1] * M_PI / 180);
 	float tmp = float(cos(pitch));
 	vector[0] = float(-tmp * -cos(yaw));
-	vector[1] = float(sin(yaw)*tmp);
+	vector[1] = float(sin(yaw) * tmp);
 	vector[2] = float(-sin(pitch));
 }

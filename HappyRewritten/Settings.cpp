@@ -42,6 +42,7 @@ void CSettings::LoadConfig(char* path) {
 	//[Aimbot]
 	Aimbot.Aimbot =								iniReader.ReadBoolean	(XorStr("Aimbot"),		XorStr("aimbot"),						Aimbot.Aimbot);
 	Aimbot.Aimbot_Hotkey =						iniReader.ReadBoolean	(XorStr("Aimbot"),		XorStr("aimbot_hotkey"),				Aimbot.Aimbot_Hotkey);
+	Aimbot.Aimbot_Mode =						iniReader.ReadInteger	(XorStr("Aimbot"),		XorStr("aimbot_mode"),					Aimbot.Aimbot_Mode);
 	Aimbot.Aimbot_Bone =						iniReader.ReadInteger	(XorStr("Aimbot"),		XorStr("aimbot_bone"),					Aimbot.Aimbot_Bone);
 	Aimbot.Aimbot_Bone2 =						iniReader.ReadInteger	(XorStr("Aimbot"),		XorStr("aimbot_bone2"),					Aimbot.Aimbot_Bone2);
 	Aimbot.Aimbot_Bone2_AfterShots =			iniReader.ReadInteger	(XorStr("Aimbot"),		XorStr("aimbot_bone2_aftershots"),		Aimbot.Aimbot_Bone2_AfterShots);
